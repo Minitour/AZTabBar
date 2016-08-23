@@ -1,0 +1,420 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		4F98B4781D6B029B0065111C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F98B4771D6B029B0065111C /* AppDelegate.swift */; };
+		4F98B47A1D6B029B0065111C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F98B4791D6B029B0065111C /* ViewController.swift */; };
+		4F98B47D1D6B029B0065111C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4F98B47B1D6B029B0065111C /* Main.storyboard */; };
+		4F98B47F1D6B029B0065111C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4F98B47E1D6B029B0065111C /* Assets.xcassets */; };
+		4F98B4821D6B029B0065111C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4F98B4801D6B029B0065111C /* LaunchScreen.storyboard */; };
+		4F98B4DD1D6B1E7E0065111C /* Constraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F98B4CF1D6B1E7E0065111C /* Constraint.swift */; };
+		4F98B4DE1D6B1E7E0065111C /* ConstraintAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F98B4D01D6B1E7E0065111C /* ConstraintAttributes.swift */; };
+		4F98B4DF1D6B1E7E0065111C /* ConstraintDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F98B4D11D6B1E7E0065111C /* ConstraintDescription.swift */; };
+		4F98B4E01D6B1E7E0065111C /* ConstraintItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F98B4D21D6B1E7E0065111C /* ConstraintItem.swift */; };
+		4F98B4E11D6B1E7E0065111C /* ConstraintMaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F98B4D31D6B1E7E0065111C /* ConstraintMaker.swift */; };
+		4F98B4E21D6B1E7E0065111C /* ConstraintRelation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F98B4D41D6B1E7E0065111C /* ConstraintRelation.swift */; };
+		4F98B4E31D6B1E7E0065111C /* Debugging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F98B4D51D6B1E7E0065111C /* Debugging.swift */; };
+		4F98B4E41D6B1E7E0065111C /* EdgeInsets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F98B4D61D6B1E7E0065111C /* EdgeInsets.swift */; };
+		4F98B4E51D6B1E7E0065111C /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4F98B4D71D6B1E7E0065111C /* Info.plist */; };
+		4F98B4E61D6B1E7E0065111C /* LayoutConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F98B4D81D6B1E7E0065111C /* LayoutConstraint.swift */; };
+		4F98B4E71D6B1E7E0065111C /* SnapKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F98B4DA1D6B1E7E0065111C /* SnapKit.swift */; };
+		4F98B4E81D6B1E7E0065111C /* View+SnapKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F98B4DB1D6B1E7E0065111C /* View+SnapKit.swift */; };
+		4F98B4E91D6B1E7E0065111C /* ViewController+SnapKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F98B4DC1D6B1E7E0065111C /* ViewController+SnapKit.swift */; };
+		4F98B4F41D6C7D3D0065111C /* AZTabBar+Protocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F98B4EE1D6C7D3D0065111C /* AZTabBar+Protocol.swift */; };
+		4F98B4F51D6C7D3D0065111C /* AZTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F98B4EF1D6C7D3D0065111C /* AZTabBarController.swift */; };
+		4F98B4F61D6C7D3D0065111C /* AZTabBarItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F98B4F01D6C7D3D0065111C /* AZTabBarItemCell.swift */; };
+		4F98B4F71D6C7D3D0065111C /* AZStickerTab.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4F98B4F21D6C7D3D0065111C /* AZStickerTab.storyboard */; };
+		4F98B4F81D6C7D3D0065111C /* AZTabBarItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4F98B4F31D6C7D3D0065111C /* AZTabBarItemCell.xib */; };
+		4F98B4FA1D6C89A80065111C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4F98B4F91D6C89A70065111C /* Assets.xcassets */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		4F98B4741D6B029B0065111C /* Sticker Tab Bar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Sticker Tab Bar.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4F98B4771D6B029B0065111C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		4F98B4791D6B029B0065111C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		4F98B47C1D6B029B0065111C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		4F98B47E1D6B029B0065111C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		4F98B4811D6B029B0065111C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		4F98B4831D6B029B0065111C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4F98B4CF1D6B1E7E0065111C /* Constraint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constraint.swift; sourceTree = "<group>"; };
+		4F98B4D01D6B1E7E0065111C /* ConstraintAttributes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConstraintAttributes.swift; sourceTree = "<group>"; };
+		4F98B4D11D6B1E7E0065111C /* ConstraintDescription.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConstraintDescription.swift; sourceTree = "<group>"; };
+		4F98B4D21D6B1E7E0065111C /* ConstraintItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConstraintItem.swift; sourceTree = "<group>"; };
+		4F98B4D31D6B1E7E0065111C /* ConstraintMaker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConstraintMaker.swift; sourceTree = "<group>"; };
+		4F98B4D41D6B1E7E0065111C /* ConstraintRelation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConstraintRelation.swift; sourceTree = "<group>"; };
+		4F98B4D51D6B1E7E0065111C /* Debugging.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Debugging.swift; sourceTree = "<group>"; };
+		4F98B4D61D6B1E7E0065111C /* EdgeInsets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EdgeInsets.swift; sourceTree = "<group>"; };
+		4F98B4D71D6B1E7E0065111C /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4F98B4D81D6B1E7E0065111C /* LayoutConstraint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutConstraint.swift; sourceTree = "<group>"; };
+		4F98B4D91D6B1E7E0065111C /* SnapKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SnapKit.h; sourceTree = "<group>"; };
+		4F98B4DA1D6B1E7E0065111C /* SnapKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapKit.swift; sourceTree = "<group>"; };
+		4F98B4DB1D6B1E7E0065111C /* View+SnapKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "View+SnapKit.swift"; sourceTree = "<group>"; };
+		4F98B4DC1D6B1E7E0065111C /* ViewController+SnapKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ViewController+SnapKit.swift"; sourceTree = "<group>"; };
+		4F98B4EE1D6C7D3D0065111C /* AZTabBar+Protocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AZTabBar+Protocol.swift"; sourceTree = "<group>"; };
+		4F98B4EF1D6C7D3D0065111C /* AZTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AZTabBarController.swift; sourceTree = "<group>"; };
+		4F98B4F01D6C7D3D0065111C /* AZTabBarItemCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AZTabBarItemCell.swift; sourceTree = "<group>"; };
+		4F98B4F21D6C7D3D0065111C /* AZStickerTab.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = AZStickerTab.storyboard; sourceTree = "<group>"; };
+		4F98B4F31D6C7D3D0065111C /* AZTabBarItemCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AZTabBarItemCell.xib; sourceTree = "<group>"; };
+		4F98B4F91D6C89A70065111C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		4F98B4711D6B029B0065111C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		4F98B46B1D6B029B0065111C = {
+			isa = PBXGroup;
+			children = (
+				4F98B4EC1D6C7D3D0065111C /* AZTabBar */,
+				4F98B4CE1D6B1E7E0065111C /* SnapKit */,
+				4F98B4761D6B029B0065111C /* Sticker Tab Bar */,
+				4F98B4751D6B029B0065111C /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		4F98B4751D6B029B0065111C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				4F98B4741D6B029B0065111C /* Sticker Tab Bar.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		4F98B4761D6B029B0065111C /* Sticker Tab Bar */ = {
+			isa = PBXGroup;
+			children = (
+				4F98B4771D6B029B0065111C /* AppDelegate.swift */,
+				4F98B4791D6B029B0065111C /* ViewController.swift */,
+				4F98B47B1D6B029B0065111C /* Main.storyboard */,
+				4F98B47E1D6B029B0065111C /* Assets.xcassets */,
+				4F98B4801D6B029B0065111C /* LaunchScreen.storyboard */,
+				4F98B4831D6B029B0065111C /* Info.plist */,
+			);
+			path = "Sticker Tab Bar";
+			sourceTree = "<group>";
+		};
+		4F98B4CE1D6B1E7E0065111C /* SnapKit */ = {
+			isa = PBXGroup;
+			children = (
+				4F98B4CF1D6B1E7E0065111C /* Constraint.swift */,
+				4F98B4D01D6B1E7E0065111C /* ConstraintAttributes.swift */,
+				4F98B4D11D6B1E7E0065111C /* ConstraintDescription.swift */,
+				4F98B4D21D6B1E7E0065111C /* ConstraintItem.swift */,
+				4F98B4D31D6B1E7E0065111C /* ConstraintMaker.swift */,
+				4F98B4D41D6B1E7E0065111C /* ConstraintRelation.swift */,
+				4F98B4D51D6B1E7E0065111C /* Debugging.swift */,
+				4F98B4D61D6B1E7E0065111C /* EdgeInsets.swift */,
+				4F98B4D71D6B1E7E0065111C /* Info.plist */,
+				4F98B4D81D6B1E7E0065111C /* LayoutConstraint.swift */,
+				4F98B4D91D6B1E7E0065111C /* SnapKit.h */,
+				4F98B4DA1D6B1E7E0065111C /* SnapKit.swift */,
+				4F98B4DB1D6B1E7E0065111C /* View+SnapKit.swift */,
+				4F98B4DC1D6B1E7E0065111C /* ViewController+SnapKit.swift */,
+			);
+			path = SnapKit;
+			sourceTree = "<group>";
+		};
+		4F98B4EC1D6C7D3D0065111C /* AZTabBar */ = {
+			isa = PBXGroup;
+			children = (
+				4F98B4ED1D6C7D3D0065111C /* Source */,
+				4F98B4F11D6C7D3D0065111C /* XIB */,
+				4F98B4F91D6C89A70065111C /* Assets.xcassets */,
+			);
+			path = AZTabBar;
+			sourceTree = "<group>";
+		};
+		4F98B4ED1D6C7D3D0065111C /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				4F98B4EE1D6C7D3D0065111C /* AZTabBar+Protocol.swift */,
+				4F98B4EF1D6C7D3D0065111C /* AZTabBarController.swift */,
+				4F98B4F01D6C7D3D0065111C /* AZTabBarItemCell.swift */,
+			);
+			path = Source;
+			sourceTree = "<group>";
+		};
+		4F98B4F11D6C7D3D0065111C /* XIB */ = {
+			isa = PBXGroup;
+			children = (
+				4F98B4F21D6C7D3D0065111C /* AZStickerTab.storyboard */,
+				4F98B4F31D6C7D3D0065111C /* AZTabBarItemCell.xib */,
+			);
+			path = XIB;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		4F98B4731D6B029B0065111C /* Sticker Tab Bar */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4F98B4861D6B029B0065111C /* Build configuration list for PBXNativeTarget "Sticker Tab Bar" */;
+			buildPhases = (
+				4F98B4701D6B029B0065111C /* Sources */,
+				4F98B4711D6B029B0065111C /* Frameworks */,
+				4F98B4721D6B029B0065111C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Sticker Tab Bar";
+			productName = "Sticker Tab Bar";
+			productReference = 4F98B4741D6B029B0065111C /* Sticker Tab Bar.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		4F98B46C1D6B029B0065111C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0800;
+				LastUpgradeCheck = 0800;
+				ORGANIZATIONNAME = "New Sound Interactive";
+				TargetAttributes = {
+					4F98B4731D6B029B0065111C = {
+						CreatedOnToolsVersion = 8.0;
+						DevelopmentTeam = Y759RK5K7D;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 4F98B46F1D6B029B0065111C /* Build configuration list for PBXProject "Sticker Tab Bar" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 4F98B46B1D6B029B0065111C;
+			productRefGroup = 4F98B4751D6B029B0065111C /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				4F98B4731D6B029B0065111C /* Sticker Tab Bar */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		4F98B4721D6B029B0065111C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4F98B4F71D6C7D3D0065111C /* AZStickerTab.storyboard in Resources */,
+				4F98B4821D6B029B0065111C /* LaunchScreen.storyboard in Resources */,
+				4F98B4E51D6B1E7E0065111C /* Info.plist in Resources */,
+				4F98B4F81D6C7D3D0065111C /* AZTabBarItemCell.xib in Resources */,
+				4F98B4FA1D6C89A80065111C /* Assets.xcassets in Resources */,
+				4F98B47F1D6B029B0065111C /* Assets.xcassets in Resources */,
+				4F98B47D1D6B029B0065111C /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		4F98B4701D6B029B0065111C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4F98B4E41D6B1E7E0065111C /* EdgeInsets.swift in Sources */,
+				4F98B4F41D6C7D3D0065111C /* AZTabBar+Protocol.swift in Sources */,
+				4F98B4DD1D6B1E7E0065111C /* Constraint.swift in Sources */,
+				4F98B4E11D6B1E7E0065111C /* ConstraintMaker.swift in Sources */,
+				4F98B4E21D6B1E7E0065111C /* ConstraintRelation.swift in Sources */,
+				4F98B4DE1D6B1E7E0065111C /* ConstraintAttributes.swift in Sources */,
+				4F98B47A1D6B029B0065111C /* ViewController.swift in Sources */,
+				4F98B4E71D6B1E7E0065111C /* SnapKit.swift in Sources */,
+				4F98B4781D6B029B0065111C /* AppDelegate.swift in Sources */,
+				4F98B4DF1D6B1E7E0065111C /* ConstraintDescription.swift in Sources */,
+				4F98B4E31D6B1E7E0065111C /* Debugging.swift in Sources */,
+				4F98B4E81D6B1E7E0065111C /* View+SnapKit.swift in Sources */,
+				4F98B4F61D6C7D3D0065111C /* AZTabBarItemCell.swift in Sources */,
+				4F98B4E61D6B1E7E0065111C /* LayoutConstraint.swift in Sources */,
+				4F98B4E01D6B1E7E0065111C /* ConstraintItem.swift in Sources */,
+				4F98B4F51D6C7D3D0065111C /* AZTabBarController.swift in Sources */,
+				4F98B4E91D6B1E7E0065111C /* ViewController+SnapKit.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		4F98B47B1D6B029B0065111C /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				4F98B47C1D6B029B0065111C /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		4F98B4801D6B029B0065111C /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				4F98B4811D6B029B0065111C /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		4F98B4841D6B029B0065111C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		4F98B4851D6B029B0065111C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		4F98B4871D6B029B0065111C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = Y759RK5K7D;
+				INFOPLIST_FILE = "Sticker Tab Bar/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "mobi.newsound.Sticker-Tab-Bar";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		4F98B4881D6B029B0065111C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = Y759RK5K7D;
+				INFOPLIST_FILE = "Sticker Tab Bar/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "mobi.newsound.Sticker-Tab-Bar";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		4F98B46F1D6B029B0065111C /* Build configuration list for PBXProject "Sticker Tab Bar" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4F98B4841D6B029B0065111C /* Debug */,
+				4F98B4851D6B029B0065111C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4F98B4861D6B029B0065111C /* Build configuration list for PBXNativeTarget "Sticker Tab Bar" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4F98B4871D6B029B0065111C /* Debug */,
+				4F98B4881D6B029B0065111C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 4F98B46C1D6B029B0065111C /* Project object */;
+}
