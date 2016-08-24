@@ -527,58 +527,58 @@ internal class ConstraintDescription: ConstraintDescriptionExtendable, Constrain
     
     // MARK: Private
     
-    private let fromItem: ConstraintItem
-    private var toItem: ConstraintItem {
+    fileprivate let fromItem: ConstraintItem
+    fileprivate var toItem: ConstraintItem {
         willSet {
             if self.concreteConstraint != nil {
                 fatalError("Attempting to modify a ConstraintDescription after its constraint has been created.")
             }
         }
     }
-    private var relation: ConstraintRelation? {
+    fileprivate var relation: ConstraintRelation? {
         willSet {
             if self.concreteConstraint != nil {
                 fatalError("Attempting to modify a ConstraintDescription after its constraint has been created.")
             }
         }
     }
-    private var constant: Any = Float(0.0) {
+    fileprivate var constant: Any = Float(0.0) {
         willSet {
             if self.concreteConstraint != nil {
                 fatalError("Attempting to modify a ConstraintDescription after its constraint has been created.")
             }
         }
     }
-    private var multiplier: Float = 1.0 {
+    fileprivate var multiplier: Float = 1.0 {
         willSet {
             if self.concreteConstraint != nil {
                 fatalError("Attempting to modify a ConstraintDescription after its constraint has been created.")
             }
         }
     }
-    private var priority: Float = 1000.0 {
+    fileprivate var priority: Float = 1000.0 {
         willSet {
             if self.concreteConstraint != nil {
                 fatalError("Attempting to modify a ConstraintDescription after its constraint has been created.")
             }
         }
     }
-    private var concreteConstraint: ConcreteConstraint? = nil
+    fileprivate var concreteConstraint: ConcreteConstraint? = nil
     
-    private func addConstraint(_ attributes: ConstraintAttributes) -> ConstraintDescription {
+    fileprivate func addConstraint(_ attributes: ConstraintAttributes) -> ConstraintDescription {
         if self.relation == nil {
             self.fromItem.attributes += attributes
         }
         return self
     }
     
-    private func constrainTo(_ other: ConstraintItem, relation: ConstraintRelation) -> ConstraintDescription {
+    fileprivate func constrainTo(_ other: ConstraintItem, relation: ConstraintRelation) -> ConstraintDescription {
         if other.attributes != ConstraintAttributes.None {
             let toLayoutAttributes = other.attributes.layoutAttributes
             if toLayoutAttributes.count > 1 {
                 let fromLayoutAttributes = self.fromItem.attributes.layoutAttributes
                 if toLayoutAttributes != fromLayoutAttributes {
-                    NSException(name: "Invalid Constraint" as NSExceptionName, reason: "Cannot constrain to multiple non identical attributes", userInfo: nil).raise()
+                    NSException(name: NSExceptionName(rawValue: "Invalid Constraint"), reason: "Cannot constrain to multiple non identical attributes", userInfo: nil).raise()
                     return self
                 }
                 other.attributes = ConstraintAttributes.None
@@ -589,41 +589,41 @@ internal class ConstraintDescription: ConstraintDescriptionExtendable, Constrain
         return self
     }
     
-    private func constrainTo(_ other: View, relation: ConstraintRelation) -> ConstraintDescription {
+    fileprivate func constrainTo(_ other: View, relation: ConstraintRelation) -> ConstraintDescription {
         return constrainTo(ConstraintItem(object: other, attributes: ConstraintAttributes.None), relation: relation)
     }
     
     @available(iOS 7.0, *)
-    private func constrainTo(_ other: LayoutSupport, relation: ConstraintRelation) -> ConstraintDescription {
+    fileprivate func constrainTo(_ other: LayoutSupport, relation: ConstraintRelation) -> ConstraintDescription {
         return constrainTo(ConstraintItem(object: other, attributes: ConstraintAttributes.None), relation: relation)
     }
     
     @available(iOS 9.0, OSX 10.11, *)
-    private func constrainTo(_ other: NSLayoutAnchor<AnyObject>, relation: ConstraintRelation) -> ConstraintDescription {
+    fileprivate func constrainTo(_ other: NSLayoutAnchor<AnyObject>, relation: ConstraintRelation) -> ConstraintDescription {
         return constrainTo(ConstraintItem(object: other, attributes: ConstraintAttributes.None), relation: relation)
     }
     
-    private func constrainTo(_ other: Float, relation: ConstraintRelation) -> ConstraintDescription {
+    fileprivate func constrainTo(_ other: Float, relation: ConstraintRelation) -> ConstraintDescription {
         self.constant = other
         return constrainTo(ConstraintItem(object: nil, attributes: ConstraintAttributes.None), relation: relation)
     }
     
-    private func constrainTo(_ other: Double, relation: ConstraintRelation) -> ConstraintDescription {
+    fileprivate func constrainTo(_ other: Double, relation: ConstraintRelation) -> ConstraintDescription {
         self.constant = other
         return constrainTo(ConstraintItem(object: nil, attributes: ConstraintAttributes.None), relation: relation)
     }
     
-    private func constrainTo(_ other: CGSize, relation: ConstraintRelation) -> ConstraintDescription {
+    fileprivate func constrainTo(_ other: CGSize, relation: ConstraintRelation) -> ConstraintDescription {
         self.constant = other
         return constrainTo(ConstraintItem(object: nil, attributes: ConstraintAttributes.None), relation: relation)
     }
     
-    private func constrainTo(_ other: CGPoint, relation: ConstraintRelation) -> ConstraintDescription {
+    fileprivate func constrainTo(_ other: CGPoint, relation: ConstraintRelation) -> ConstraintDescription {
         self.constant = other
         return constrainTo(ConstraintItem(object: nil, attributes: ConstraintAttributes.None), relation: relation)
     }
     
-    private func constrainTo(_ other: EdgeInsets, relation: ConstraintRelation) -> ConstraintDescription {
+    fileprivate func constrainTo(_ other: EdgeInsets, relation: ConstraintRelation) -> ConstraintDescription {
         self.constant = other
         return constrainTo(ConstraintItem(object: nil, attributes: ConstraintAttributes.None), relation: relation)
     }

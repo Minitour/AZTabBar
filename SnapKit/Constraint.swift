@@ -30,35 +30,35 @@ import AppKit
 /**
     Used to expose API's for a Constraint
 */
-public class Constraint {
+open class Constraint {
     
-    public func install() -> [LayoutConstraint] { fatalError("Must be implemented by Concrete subclass.") }
-    public func uninstall() -> Void { fatalError("Must be implemented by Concrete subclass.") }
-    public func activate() -> Void { fatalError("Must be implemented by Concrete subclass.") }
-    public func deactivate() -> Void { fatalError("Must be implemented by Concrete subclass.") }
+    open func install() -> [LayoutConstraint] { fatalError("Must be implemented by Concrete subclass.") }
+    open func uninstall() -> Void { fatalError("Must be implemented by Concrete subclass.") }
+    open func activate() -> Void { fatalError("Must be implemented by Concrete subclass.") }
+    open func deactivate() -> Void { fatalError("Must be implemented by Concrete subclass.") }
     
-    public func updateOffset(_ amount: Float) -> Void { fatalError("Must be implemented by Concrete subclass.") }
-    public func updateOffset(_ amount: Double) -> Void { fatalError("Must be implemented by Concrete subclass.") }
-    public func updateOffset(_ amount: CGFloat) -> Void { fatalError("Must be implemented by Concrete subclass.") }
-    public func updateOffset(_ amount: Int) -> Void { fatalError("Must be implemented by Concrete subclass.") }
-    public func updateOffset(_ amount: UInt) -> Void { fatalError("Must be implemented by Concrete subclass.") }
-    public func updateOffset(_ amount: CGPoint) -> Void { fatalError("Must be implemented by Concrete subclass.") }
-    public func updateOffset(_ amount: CGSize) -> Void { fatalError("Must be implemented by Concrete subclass.") }
-    public func updateOffset(_ amount: EdgeInsets) -> Void { fatalError("Must be implemented by Concrete subclass.") }
+    open func updateOffset(_ amount: Float) -> Void { fatalError("Must be implemented by Concrete subclass.") }
+    open func updateOffset(_ amount: Double) -> Void { fatalError("Must be implemented by Concrete subclass.") }
+    open func updateOffset(_ amount: CGFloat) -> Void { fatalError("Must be implemented by Concrete subclass.") }
+    open func updateOffset(_ amount: Int) -> Void { fatalError("Must be implemented by Concrete subclass.") }
+    open func updateOffset(_ amount: UInt) -> Void { fatalError("Must be implemented by Concrete subclass.") }
+    open func updateOffset(_ amount: CGPoint) -> Void { fatalError("Must be implemented by Concrete subclass.") }
+    open func updateOffset(_ amount: CGSize) -> Void { fatalError("Must be implemented by Concrete subclass.") }
+    open func updateOffset(_ amount: EdgeInsets) -> Void { fatalError("Must be implemented by Concrete subclass.") }
     
-    public func updateInsets(_ amount: EdgeInsets) -> Void { fatalError("Must be implemented by Concrete subclass.") }
+    open func updateInsets(_ amount: EdgeInsets) -> Void { fatalError("Must be implemented by Concrete subclass.") }
     
-    public func updatePriority(_ priority: Float) -> Void { fatalError("Must be implemented by Concrete subclass.") }
-    public func updatePriority(_ priority: Double) -> Void { fatalError("Must be implemented by Concrete subclass.") }
-    public func updatePriority(_ priority: CGFloat) -> Void { fatalError("Must be implemented by Concrete subclass.") }
-    public func updatePriority(_ priority: UInt) -> Void { fatalError("Must be implemented by Concrete subclass.") }
-    public func updatePriority(_ priority: Int) -> Void { fatalError("Must be implemented by Concrete subclass.") }
-    public func updatePriorityRequired() -> Void { fatalError("Must be implemented by Concrete subclass.") }
-    public func updatePriorityHigh() -> Void { fatalError("Must be implemented by Concrete subclass.") }
-    public func updatePriorityMedium() -> Void { fatalError("Must be implemented by Concrete subclass.") }
-    public func updatePriorityLow() -> Void { fatalError("Must be implemented by Concrete subclass.") }
+    open func updatePriority(_ priority: Float) -> Void { fatalError("Must be implemented by Concrete subclass.") }
+    open func updatePriority(_ priority: Double) -> Void { fatalError("Must be implemented by Concrete subclass.") }
+    open func updatePriority(_ priority: CGFloat) -> Void { fatalError("Must be implemented by Concrete subclass.") }
+    open func updatePriority(_ priority: UInt) -> Void { fatalError("Must be implemented by Concrete subclass.") }
+    open func updatePriority(_ priority: Int) -> Void { fatalError("Must be implemented by Concrete subclass.") }
+    open func updatePriorityRequired() -> Void { fatalError("Must be implemented by Concrete subclass.") }
+    open func updatePriorityHigh() -> Void { fatalError("Must be implemented by Concrete subclass.") }
+    open func updatePriorityMedium() -> Void { fatalError("Must be implemented by Concrete subclass.") }
+    open func updatePriorityLow() -> Void { fatalError("Must be implemented by Concrete subclass.") }
 
-    public var layoutConstraints: [LayoutConstraint] { fatalError("Must be implemented by Concrete subclass.") }
+    open var layoutConstraints: [LayoutConstraint] { fatalError("Must be implemented by Concrete subclass.") }
     
     internal var makerFile: String = "Unknown"
     internal var makerLine: UInt = 0
@@ -171,11 +171,11 @@ internal class ConcreteConstraint: Constraint {
         }
     }
     
-    private let fromItem: ConstraintItem
-    private let toItem: ConstraintItem
-    private let relation: ConstraintRelation
-    private let multiplier: Float
-    private var constant: Any {
+    fileprivate let fromItem: ConstraintItem
+    fileprivate let toItem: ConstraintItem
+    fileprivate let relation: ConstraintRelation
+    fileprivate let multiplier: Float
+    fileprivate var constant: Any {
         didSet {
             if let installInfo = self.installInfo {
                 for layoutConstraint in installInfo.layoutConstraints.allObjects as! [LayoutConstraint] {
@@ -185,7 +185,7 @@ internal class ConcreteConstraint: Constraint {
             }
         }
     }
-    private var priority: Float {
+    fileprivate var priority: Float {
         didSet {
             if let installInfo = self.installInfo {
                 for layoutConstraint in installInfo.layoutConstraints.allObjects as! [LayoutConstraint] {
@@ -195,9 +195,9 @@ internal class ConcreteConstraint: Constraint {
         }
     }
     
-    private let label: String?
+    fileprivate let label: String?
     
-    private var installInfo: ConcreteConstraintInstallInfo? = nil
+    fileprivate var installInfo: ConcreteConstraintInstallInfo? = nil
     
     override var layoutConstraints: [LayoutConstraint] {
         if installInfo == nil {
@@ -225,7 +225,7 @@ internal class ConcreteConstraint: Constraint {
         if self.toItem.view != nil {
             installOnView = closestCommonSuperviewFromView(self.fromItem.view, toView: self.toItem.view)
             if installOnView == nil {
-                NSException(name: "Cannot Install Constraint" as NSExceptionName, reason: "No common superview between views (@\(self.makerFile)#\(self.makerLine))", userInfo: nil).raise()
+                NSException(name: NSExceptionName(rawValue: "Cannot Install Constraint"), reason: "No common superview between views (@\(self.makerFile)#\(self.makerLine))", userInfo: nil).raise()
                 return []
             }
         } else {
@@ -235,7 +235,7 @@ internal class ConcreteConstraint: Constraint {
             } else {
                 installOnView = self.fromItem.view?.superview
                 if installOnView == nil {
-                    NSException(name: "Cannot Install Constraint" as NSExceptionName, reason: "Missing superview (@\(self.makerFile)#\(self.makerLine))", userInfo: nil).raise()
+                    NSException(name: NSExceptionName(rawValue: "Cannot Install Constraint"), reason: "Missing superview (@\(self.makerFile)#\(self.makerLine))", userInfo: nil).raise()
                     return []
                 }
             }
@@ -243,7 +243,7 @@ internal class ConcreteConstraint: Constraint {
         
         if let installedOnView = self.installInfo?.view {
             if installedOnView != installOnView {
-                NSException(name: "Cannot Install Constraint" as NSExceptionName, reason: "Already installed on different view. (@\(self.makerFile)#\(self.makerLine))", userInfo: nil).raise()
+                NSException(name: NSExceptionName(rawValue: "Cannot Install Constraint"), reason: "Already installed on different view. (@\(self.makerFile)#\(self.makerLine))", userInfo: nil).raise()
                 return []
             }
             return self.installInfo?.layoutConstraints.allObjects as? [LayoutConstraint] ?? []
@@ -396,7 +396,7 @@ private struct ConcreteConstraintInstallInfo {
 
 private extension NSLayoutAttribute {
     
-    private func snp_constantForValue(_ value: Any?) -> CGFloat {
+    func snp_constantForValue(_ value: Any?) -> CGFloat {
         // Float
         if let float = value as? Float {
             return CGFloat(float)

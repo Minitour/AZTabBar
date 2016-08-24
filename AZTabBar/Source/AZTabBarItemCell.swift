@@ -1,6 +1,5 @@
 //
 //  AZTabBarItemCell.swift
-//  Sticker Tab Bar
 //
 //  Created by Antonio Zaitoun on 8/22/16.
 //  Copyright © Crofis. All rights reserved.
@@ -13,7 +12,7 @@ class AZTabBarItemCell:UICollectionViewCell{
     
     
     static func id()->String {
-        return "AZTabBarItemCell"
+        return R.xib.cell
     }
     
     

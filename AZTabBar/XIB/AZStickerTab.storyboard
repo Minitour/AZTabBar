@@ -9,7 +9,7 @@
         <!--Tab Bar Controller-->
         <scene sceneID="SMe-qP-lBT">
             <objects>
-                <viewController storyboardIdentifier="AZStickerTabController" id="SlM-VA-nT9" customClass="AZTabBarController" customModule="Sticker_Tab_Bar" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="AZStickerTabController" id="SlM-VA-nT9" customClass="AZTabBarController" customModule="AZTabBar" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="5t6-ua-cLN"/>
                         <viewControllerLayoutGuide type="bottom" id="Fnh-xH-eDZ"/>
@@ -112,6 +112,7 @@
                         <outlet property="leftScrollButton" destination="1Fi-fZ-YWO" id="9ev-aT-FPN"/>
                         <outlet property="menuButton" destination="ZGW-xM-nSh" id="59l-QD-pJV"/>
                         <outlet property="rightScrollButton" destination="l8i-6z-HIx" id="fHm-f7-u8S"/>
+                        <outlet property="seperatorConstraint" destination="6eX-Ic-iNy" id="KZa-Iz-Mhn"/>
                         <outlet property="tabBar" destination="2q6-VN-xrW" id="xOa-Lw-oIu"/>
                         <outlet property="tabBarSeperatorLine" destination="6z0-WB-PSR" id="Njs-H1-6bT"/>
                         <outlet property="viewContainer" destination="7Ae-Sb-5Fb" id="UcF-WB-OHD"/>

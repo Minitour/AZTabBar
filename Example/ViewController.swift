@@ -40,6 +40,7 @@ class ViewController: UIViewController,AZTabBarDelegate,AZTabBarDataSource {
         let controller = AZTabBarController.standardController()
         controller.delegate = self
         controller.dataSource = self
+        controller.currentIndex = 7
         controller.tabBackgroundColor = UIColor(red: (247.0 / 255.0), green: (247.0 / 255.0), blue: (247.0 / 255.0), alpha: 1)
         addChildViewController(controller)
         controller.view.frame = self.view.frame
@@ -85,9 +86,7 @@ class ViewController: UIViewController,AZTabBarDelegate,AZTabBarDataSource {
         label.text = "\(index+1)"
         label.textAlignment = .center
         label.sizeToFit()
-        label.layer.borderWidth = 0.2
-        label.backgroundColor = UIColor.white
-        label.layer.cornerRadius = 5
+        label.backgroundColor = UIColor.clear
         label.clipsToBounds = true
         
         return label

@@ -57,7 +57,7 @@ public extension LayoutConstraint {
         }
     }
 
-    override public var description: String {
+    override open var description: String {
         var description = "<"
         
         description += descriptionForObject(self)
@@ -116,15 +116,15 @@ public extension LayoutConstraint {
 private var labelKey = ""
 
 private func descriptionForObject(_ object: AnyObject) -> String {
-    let pointerDescription = NSString(format: "%p", UInt(ObjectIdentifier(object)))
+    let pointerDescription = NSString(format: "%p", UInt(bitPattern: ObjectIdentifier(object)))
     var desc = ""
     
-    desc += object.dynamicType.description()
+    desc += type(of: object).description()
     
     if let object = object as? View {
-        desc += ":\(object.snp_label ?? pointerDescription)"
+        desc += ":\(object.snp_label ?? pointerDescription as String)"
     } else if let object = object as? LayoutConstraint {
-        desc += ":\(object.snp_label ?? pointerDescription)"
+        desc += ":\(object.snp_label ?? pointerDescription as String)"
     } else {
         desc += ":\(pointerDescription)"
     }
@@ -139,7 +139,7 @@ private func descriptionForObject(_ object: AnyObject) -> String {
 
 private extension NSLayoutRelation {
     
-    private var snp_description: String {
+    var snp_description: String {
         switch self {
         case .equal:                return "=="
         case .greaterThanOrEqual:   return ">="
@@ -151,7 +151,7 @@ private extension NSLayoutRelation {
 
 private extension NSLayoutAttribute {
     
-    private var snp_description: String {
+    var snp_description: String {
         #if os(iOS) || os(tvOS)
         switch self {
         case .notAnAttribute:       return "notAnAttribute"

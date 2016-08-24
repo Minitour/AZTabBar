@@ -1,6 +1,5 @@
 //
 //  AZTabBarController.swift
-//  Sticker Tab Bar
 //
 //  Created by Antonio Zaitoun on 8/22/16.
 //  Copyright © Crofis. All rights reserved.
@@ -12,7 +11,7 @@ import UIKit
 public final class AZTabBarController:UIViewController,UICollectionViewDelegateFlowLayout,UICollectionViewDataSource {
     
     public class func standardController()->AZTabBarController{
-        return UIStoryboard(name: "AZStickerTab", bundle: Bundle(for: self)).instantiateViewController(withIdentifier: "AZStickerTabController") as! AZTabBarController
+        return UIStoryboard(name: R.xib.storyboard, bundle: Bundle(for: self)).instantiateViewController(withIdentifier: R.xib.controller) as! AZTabBarController
     }
     
     
@@ -58,10 +57,10 @@ public final class AZTabBarController:UIViewController,UICollectionViewDelegateF
     public var dataSource:AZTabBarDataSource!
     
     //Background color of the tab bar
-    public var tabBackgroundColor:UIColor = UIColor.white
+    public var tabBackgroundColor = R.color.background
     
     //Background color of the navigation control buttons
-    public var arrowBackgroundColor:UIColor = #colorLiteral(red: 1, green: 0.99997437, blue: 0.9999912977, alpha: 0)
+    public var arrowBackgroundColor:UIColor = R.color.arrow
     
     //tint color of the buttons
     public var arrowColor:UIColor!{
@@ -75,7 +74,7 @@ public final class AZTabBarController:UIViewController,UICollectionViewDelegateF
     }
     
     //Background color of the menu button
-    public var menuBackgroundColor:UIColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)
+    public var menuBackgroundColor:UIColor = R.color.menu
     
     //tint color of the menu button
     public var menuIconColor:UIColor!{
@@ -87,7 +86,7 @@ public final class AZTabBarController:UIViewController,UICollectionViewDelegateF
     }
     
     //The color of the hairline (view) under the tab bar
-    public var sepratorColor:UIColor = #colorLiteral(red: 0.7602152824, green: 0.7601925135, blue: 0.7602053881, alpha: 1){
+    public var sepratorColor:UIColor = R.color.seperator{
         didSet{
             if self.tabBarSeperatorLine != nil{
                 self.tabBarSeperatorLine.backgroundColor = sepratorColor
@@ -109,7 +108,7 @@ public final class AZTabBarController:UIViewController,UICollectionViewDelegateF
     }
     
     //Enable/Disable shadow
-    public var allowSeperatorShadow:Bool = true{
+    public var allowSeperatorShadow:Bool = R.settings.shadow{
         didSet{
             if self.tabBarSeperatorLine != nil {
                 
@@ -118,12 +117,12 @@ public final class AZTabBarController:UIViewController,UICollectionViewDelegateF
                     if allowSeperatorShadow {
                         self.tabBarSeperatorLine.layer.masksToBounds = false
                         self.tabBarSeperatorLine.layer.shadowOffset = CGSize(width:0,height: 0)
-                        self.tabBarSeperatorLine.layer.shadowRadius = 5
-                        self.tabBarSeperatorLine.layer.shadowOpacity = 0.5
+                        self.tabBarSeperatorLine.layer.shadowRadius = R.ui.radius
+                        self.tabBarSeperatorLine.layer.shadowOpacity = R.ui.shadow
                     }else{
                         self.tabBarSeperatorLine.layer.masksToBounds = false
                         self.tabBarSeperatorLine.layer.shadowOffset = CGSize(width:0,height: 0)
-                        self.tabBarSeperatorLine.layer.shadowRadius = 5
+                        self.tabBarSeperatorLine.layer.shadowRadius = R.ui.radius
                         self.tabBarSeperatorLine.layer.shadowOpacity = 0
                     }
                     
@@ -133,7 +132,7 @@ public final class AZTabBarController:UIViewController,UICollectionViewDelegateF
     }
     
     //Hide/Show seperator
-    public var showSeperator:Bool = true{
+    public var showSeperator:Bool = R.settings.seprator{
         didSet{
             if self.seperatorConstraint != nil {
                 if showSeperator != oldValue {
@@ -148,20 +147,38 @@ public final class AZTabBarController:UIViewController,UICollectionViewDelegateF
     }
     
     //The background color of inner tabs when highlighted
-    public var highlightedItemColor:UIColor = #colorLiteral(red: 0.7602152824, green: 0.7601925135, blue: 0.7602053881, alpha: 1)
-    
-    //The index of the tab that will first appear
-    //    public var startIndex:Int = 0{
-    //        didSet{
-    //            self.currentIndex = startIndex
-    //        }
-    //    }
+    public var highlightedItemColor:UIColor = R.color.highlight
     
     //Enable or Disable the scroll view of the collection view
-    public var isScrollEnabled:Bool = false {
+    public var isScrollEnabled:Bool = R.settings.scroll {
         didSet{
             if self.collectionView != nil {
                 self.collectionView.isScrollEnabled = isScrollEnabled
+            }
+        }
+    }
+    
+    public var isPagingEnabled:Bool = R.settings.page {
+        didSet{
+            if self.collectionView != nil {
+                self.collectionView.isPagingEnabled = isPagingEnabled
+            }
+        }
+    }
+    
+    
+    //The Current Selected Index
+    public var currentIndex:Int = 0{
+        didSet{
+            //assert index
+            if self.dataSource != nil {
+                if self.currentIndex >= self.dataSource.numberOfItemsInTabBar(self){
+                    currentIndex = 0
+                }
+            }else {
+                //Attempt to change the current index before setting the data source.
+                currentIndex = 0
+                NSLog("Error", "You must set the data source before attempting to change the index.")
             }
         }
     }
@@ -170,9 +187,6 @@ public final class AZTabBarController:UIViewController,UICollectionViewDelegateF
      * Private Properties
      */
     
-    //The Current Selected Index
-    public var currentIndex:Int = 0
-    
     //The current page we are in
     private var currentPage:Int = 0
     
@@ -180,7 +194,7 @@ public final class AZTabBarController:UIViewController,UICollectionViewDelegateF
     private var selectedHiddenItem = 0
     
     //DO NOT CHANGE THIS - This is a fixed number that matches with the interface builder
-    private let itemPerPage = 5
+    private let itemPerPage = 5 //If you change this you doom us all
     
     //The amount of items that the collectionview holds
     private var itemAmount:Int = 0
@@ -473,8 +487,8 @@ public final class AZTabBarController:UIViewController,UICollectionViewDelegateF
         if allowSeperatorShadow {
             self.tabBarSeperatorLine.layer.masksToBounds = false
             self.tabBarSeperatorLine.layer.shadowOffset = CGSize(width:0,height: 0)
-            self.tabBarSeperatorLine.layer.shadowRadius = 5
-            self.tabBarSeperatorLine.layer.shadowOpacity = 0.5
+            self.tabBarSeperatorLine.layer.shadowRadius = R.ui.radius
+            self.tabBarSeperatorLine.layer.shadowOpacity = R.ui.shadow
         }
         
         //setup seperator height
@@ -491,7 +505,7 @@ public final class AZTabBarController:UIViewController,UICollectionViewDelegateF
         //setup menu button design
         self.menuButton.setBackgroundImage(getImageWithColor(color: self.menuBackgroundColor, size: self.menuButton.bounds.size), for: [])
         self.menuButton.setBackgroundImage(getImageWithColor(color: self.menuBackgroundColor, size: self.menuButton.bounds.size), for: UIControlState.highlighted)
-        self.menuButton.layer.cornerRadius = 5
+        self.menuButton.layer.cornerRadius = R.ui.radius
         self.menuButton.clipsToBounds = true
         self.menuButton.tintColor = menuIconColor
         
@@ -499,21 +513,21 @@ public final class AZTabBarController:UIViewController,UICollectionViewDelegateF
         //setup left/right arrow design
         self.leftScrollButton.setBackgroundImage(getImageWithColor(color: self.arrowBackgroundColor, size: self.menuButton.bounds.size), for: [])
         self.leftScrollButton.setBackgroundImage(getImageWithColor(color: self.arrowBackgroundColor, size: self.menuButton.bounds.size), for: UIControlState.highlighted)
-        self.leftScrollButton.layer.cornerRadius = 5 //self.leftScrollButton.bounds.height/2
+        self.leftScrollButton.layer.cornerRadius = R.ui.radius 
         self.leftScrollButton.clipsToBounds = true
         
         self.rightScrollButton.setBackgroundImage(getImageWithColor(color: self.arrowBackgroundColor, size: self.menuButton.bounds.size), for: [])
         self.rightScrollButton.setBackgroundImage(getImageWithColor(color: self.arrowBackgroundColor, size: self.menuButton.bounds.size), for: UIControlState.highlighted)
-        self.rightScrollButton.layer.cornerRadius = 5 //self.rightScrollButton.bounds.height/2
+        self.rightScrollButton.layer.cornerRadius = R.ui.radius
         self.rightScrollButton.clipsToBounds = true
         
         self.rightScrollButton.tintColor = arrowColor
         self.leftScrollButton.tintColor = arrowColor
         
         //Setup icons
-        self.leftScrollButton.setImage(UIImage(named:"ic_keyboard_arrow_left"), for: [])
-        self.rightScrollButton.setImage(UIImage(named:"ic_keyboard_arrow_right"), for: [])
-        self.menuButton.setImage(UIImage(named:"ic_menu"), for: [])
+        self.leftScrollButton.setImage(UIImage(named:R.assets.left), for: [])
+        self.rightScrollButton.setImage(UIImage(named:R.assets.right), for: [])
+        self.menuButton.setImage(UIImage(named:R.assets.menu), for: [])
         
     }
     
@@ -668,10 +682,6 @@ public final class AZTabBarController:UIViewController,UICollectionViewDelegateF
     /*
      * Public Methods
      */
-    
-    public func selectedItem() -> Int {
-        return self.currentIndex
-    }
     
     public func selectedPage()->Int {
         return self.currentPage
