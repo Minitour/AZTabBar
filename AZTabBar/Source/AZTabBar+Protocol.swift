@@ -18,7 +18,7 @@ public protocol AZTabBarDelegate {
     /*
      * Triggered when navigating between pages.
      */
-    func stickerTabBar(_ tabBarController: AZTabBarController, didChangeToPage index:Int)
+    func stickerTabBar(_ tabBarController: AZTabBarController, didChangeToPage index:Int ,from oldPage:Int)
     
     /*
      * Triggered when changing to a new item.

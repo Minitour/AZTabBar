@@ -42,6 +42,8 @@ class ViewController: UIViewController,AZTabBarDelegate,AZTabBarDataSource {
         controller.dataSource = self
         controller.currentIndex = 7
         controller.tabBackgroundColor = UIColor(red: (247.0 / 255.0), green: (247.0 / 255.0), blue: (247.0 / 255.0), alpha: 1)
+        controller.isPagingEnabled = true
+        controller.isScrollEnabled = true
         addChildViewController(controller)
         controller.view.frame = self.view.frame
         self.view.addSubview(controller.view)
@@ -72,7 +74,7 @@ class ViewController: UIViewController,AZTabBarDelegate,AZTabBarDataSource {
         print("Item Clicked: \(index+1)")
     }
     
-    func stickerTabBar(_ tabBarController: AZTabBarController, didChangeToPage index: Int) {
+    func stickerTabBar(_ tabBarController: AZTabBarController, didChangeToPage index:Int ,from oldPage:Int) {
         print("Current Page \(index+1)")
     }
     

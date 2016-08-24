@@ -14,7 +14,6 @@ public final class AZTabBarController:UIViewController,UICollectionViewDelegateF
         return UIStoryboard(name: R.xib.storyboard, bundle: Bundle(for: self)).instantiateViewController(withIdentifier: R.xib.controller) as! AZTabBarController
     }
     
-    
     /*
      * Outsider Views
      */
@@ -188,7 +187,14 @@ public final class AZTabBarController:UIViewController,UICollectionViewDelegateF
      */
     
     //The current page we are in
-    private var currentPage:Int = 0
+    private var currentPage:Int = 0 {
+        didSet{
+            
+            if currentPage != oldValue {
+                self.delegate.stickerTabBar(self, didChangeToPage: currentPage,from: oldValue)
+            }
+        }
+    }
     
     //This index points to the first item of the current page
     private var selectedHiddenItem = 0
@@ -228,7 +234,7 @@ public final class AZTabBarController:UIViewController,UICollectionViewDelegateF
         //Setup collection scroll setting
         self.collectionView.isScrollEnabled = isScrollEnabled
         
-        self.collectionView.isPagingEnabled = false
+        self.collectionView.isPagingEnabled = isPagingEnabled
         
         
         //Register AZTabBarItemCell
@@ -252,7 +258,6 @@ public final class AZTabBarController:UIViewController,UICollectionViewDelegateF
         didInit = true
     }
     
-    
     override public func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         self.selectedHiddenItem = currentIndex % itemPerPage != 0 ? currentIndex - (currentIndex % itemPerPage)  : currentIndex
@@ -270,7 +275,6 @@ public final class AZTabBarController:UIViewController,UICollectionViewDelegateF
         lockControlls(lock: false)
     }
     
-    
     override public func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         //Method is called when orientation is changed
@@ -287,11 +291,11 @@ public final class AZTabBarController:UIViewController,UICollectionViewDelegateF
                     }, completion: { (Bool) in
                         
                         //update params
-                        self.selectedHiddenItem = self.currentIndex % self.itemPerPage != 0 ? self.currentIndex - (self.currentIndex % self.itemPerPage)  : self.currentIndex
-                        self.currentPage = Int(self.selectedHiddenItem/self.itemPerPage)
+                        //self.selectedHiddenItem = self.currentIndex % self.itemPerPage != 0 ? self.currentIndex - (self.currentIndex % self.itemPerPage)  : self.currentIndex
+                        //self.currentPage = Int(self.selectedHiddenItem/self.itemPerPage)
                         
                         //Set the index as selected
-                        self.collectionView.selectItem(at: IndexPath(item: self.currentIndex, section: 0), animated: false, scrollPosition: [])
+                        self.collectionView.selectItem(at: IndexPath(item: self.currentIndex, section: 0), animated: true, scrollPosition: [])
                         
                         //Init the cell
                         let cell = self.collectionView.cellForItem(at: IndexPath(item: self.currentIndex, section: 0))
@@ -415,6 +419,9 @@ public final class AZTabBarController:UIViewController,UICollectionViewDelegateF
             self.selectedHiddenItem = itemAmount % itemPerPage == 0 ? itemAmount - (itemAmount % itemPerPage) - itemPerPage :  itemAmount - (itemAmount % itemPerPage)
             rightScrollButton.isEnabled = false
         }
+        
+        
+        
     }
     
     public func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
@@ -433,8 +440,16 @@ public final class AZTabBarController:UIViewController,UICollectionViewDelegateF
     public func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
         //Unlock controlls after scroll animation is finished
         self.lockControlls(lock: false)
+        
     }
     
+    public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        let page = Int(Int(scrollView.contentOffset.x)/(Int(self.collectionView.frame.size.height) * self.itemPerPage))
+        if self.currentPage != page {
+            self.currentPage = page
+            
+        }
+    }
     
     
     /*
@@ -566,7 +581,7 @@ public final class AZTabBarController:UIViewController,UICollectionViewDelegateF
         //Assert index
         if index >= 0 && index < self.itemAmount {
             //lock controls before scroll
-            lockControlls(lock: true)
+            //lockControlls(lock: true)
             
             //Scroll to index
             self.collectionView.scrollToItem(at: IndexPath(item: index, section: 0), at: .left, animated: animated)
@@ -609,7 +624,7 @@ public final class AZTabBarController:UIViewController,UICollectionViewDelegateF
         self.currentPage = Int(selectedHiddenItem/itemPerPage)
         
         //call delegate method
-        self.delegate.stickerTabBar(self, didChangeToPage: currentPage)
+        
     }
     
     public func scrollRight(sender:AnyObject){
@@ -633,7 +648,7 @@ public final class AZTabBarController:UIViewController,UICollectionViewDelegateF
         self.currentPage = Int(selectedHiddenItem/itemPerPage)
         
         //call delegate method
-        self.delegate.stickerTabBar(self, didChangeToPage: currentPage)
+        
     }
     
     public func fullScrollLeft(sender:AnyObject){
@@ -650,7 +665,7 @@ public final class AZTabBarController:UIViewController,UICollectionViewDelegateF
         //update if needed
         if self.currentPage != 0 {
             self.currentPage = 0
-            self.delegate.stickerTabBar(self, didChangeToPage: currentPage)
+            
         }
     }
     
@@ -670,7 +685,7 @@ public final class AZTabBarController:UIViewController,UICollectionViewDelegateF
         //update if needed
         if self.currentPage != Int(selectedHiddenItem/itemPerPage) {
             self.currentPage = Int(selectedHiddenItem/itemPerPage)
-            self.delegate.stickerTabBar(self, didChangeToPage: currentPage)
+            
         }
         
     }
@@ -693,15 +708,3 @@ public final class AZTabBarController:UIViewController,UICollectionViewDelegateF
     }
     
 }
-
-
-
-
-
-
-
-
-
-
-
-
