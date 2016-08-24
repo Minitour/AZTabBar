@@ -45,6 +45,7 @@ public final class AZTabBarController:UIViewController,UICollectionViewDelegateF
     //The collectionview that holds the inner tabs
     @IBOutlet weak var collectionView: UICollectionView!
     
+    @IBOutlet weak var seperatorConstraint: NSLayoutConstraint!
     
     /*
      * Public Properties
@@ -86,13 +87,75 @@ public final class AZTabBarController:UIViewController,UICollectionViewDelegateF
     }
     
     //The color of the hairline (view) under the tab bar
-    public var sepratorColor:UIColor = #colorLiteral(red: 0.7602152824, green: 0.7601925135, blue: 0.7602053881, alpha: 1)
+    public var sepratorColor:UIColor = #colorLiteral(red: 0.7602152824, green: 0.7601925135, blue: 0.7602053881, alpha: 1){
+        didSet{
+            if self.tabBarSeperatorLine != nil{
+                self.tabBarSeperatorLine.backgroundColor = sepratorColor
+            }
+        }
+    }
+    
+    //seperator height
+    public var seperatorHeight:CGFloat = 1 {
+        didSet{
+            if self.seperatorConstraint != nil{
+                if seperatorHeight != oldValue {
+                    if showSeperator{
+                        self.seperatorConstraint.constant = seperatorHeight
+                    }
+                }
+            }
+        }
+    }
+    
+    //Enable/Disable shadow
+    public var allowSeperatorShadow:Bool = true{
+        didSet{
+            if self.tabBarSeperatorLine != nil {
+                
+                if allowSeperatorShadow != oldValue {
+                    
+                    if allowSeperatorShadow {
+                        self.tabBarSeperatorLine.layer.masksToBounds = false
+                        self.tabBarSeperatorLine.layer.shadowOffset = CGSize(width:0,height: 0)
+                        self.tabBarSeperatorLine.layer.shadowRadius = 5
+                        self.tabBarSeperatorLine.layer.shadowOpacity = 0.5
+                    }else{
+                        self.tabBarSeperatorLine.layer.masksToBounds = false
+                        self.tabBarSeperatorLine.layer.shadowOffset = CGSize(width:0,height: 0)
+                        self.tabBarSeperatorLine.layer.shadowRadius = 5
+                        self.tabBarSeperatorLine.layer.shadowOpacity = 0
+                    }
+                    
+                }
+            }
+        }
+    }
+    
+    //Hide/Show seperator
+    public var showSeperator:Bool = true{
+        didSet{
+            if self.seperatorConstraint != nil {
+                if showSeperator != oldValue {
+                    if showSeperator {
+                        self.seperatorConstraint.constant = seperatorHeight
+                    }else{
+                        self.seperatorConstraint.constant = 0
+                    }
+                }
+            }
+        }
+    }
     
     //The background color of inner tabs when highlighted
     public var highlightedItemColor:UIColor = #colorLiteral(red: 0.7602152824, green: 0.7601925135, blue: 0.7602053881, alpha: 1)
     
     //The index of the tab that will first appear
-    public var startIndex:Int = 0
+    //    public var startIndex:Int = 0{
+    //        didSet{
+    //            self.currentIndex = startIndex
+    //        }
+    //    }
     
     //Enable or Disable the scroll view of the collection view
     public var isScrollEnabled:Bool = false {
@@ -102,12 +165,13 @@ public final class AZTabBarController:UIViewController,UICollectionViewDelegateF
             }
         }
     }
+    
     /*
      * Private Properties
      */
     
     //The Current Selected Index
-    private var currentIndex:Int = 0
+    public var currentIndex:Int = 0
     
     //The current page we are in
     private var currentPage:Int = 0
@@ -126,6 +190,8 @@ public final class AZTabBarController:UIViewController,UICollectionViewDelegateF
     
     //global flag, Do no change - used to check if the index was highlighted (starting index)
     private var didInitHighlight = false
+    
+    private var didInit = false
     
     /*
      * UIViewController Methods
@@ -167,8 +233,29 @@ public final class AZTabBarController:UIViewController,UICollectionViewDelegateF
         initUiDesign()
         
         //Set the page using the selected index
-        switchTab(to: startIndex)
+        switchTab(to: currentIndex)
+        
+        didInit = true
     }
+    
+    
+    override public func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        self.selectedHiddenItem = currentIndex % itemPerPage != 0 ? currentIndex - (currentIndex % itemPerPage)  : currentIndex
+        self.currentPage = Int(selectedHiddenItem/itemPerPage)
+        
+        self.collectionView.selectItem(at: IndexPath(item: self.currentIndex, section: 0), animated: false, scrollPosition: [])
+        
+        //Init the cell
+        let cell = self.collectionView.cellForItem(at: IndexPath(item: self.currentIndex, section: 0))
+        
+        //Set the cell as selected
+        cell?.isSelected = true
+        
+        scroll(to: self.selectedHiddenItem, animated: false)
+        lockControlls(lock: false)
+    }
+    
     
     override public func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
@@ -177,13 +264,17 @@ public final class AZTabBarController:UIViewController,UICollectionViewDelegateF
         //Once screen size has changed -> wait for animation to finish.
         coordinator.animate(alongsideTransition: {(context: UIViewControllerTransitionCoordinatorContext) -> Void in
             }, completion: {(context: UIViewControllerTransitionCoordinatorContext) -> Void in
-
+                
                 //Reload data -> to recalculate the sizes of the cells
                 self.collectionView.performBatchUpdates({
                     //On completion -> reload that data and reselect the selected index (highlight it)
                     self.collectionView.reloadData()
                     
                     }, completion: { (Bool) in
+                        
+                        //update params
+                        self.selectedHiddenItem = self.currentIndex % self.itemPerPage != 0 ? self.currentIndex - (self.currentIndex % self.itemPerPage)  : self.currentIndex
+                        self.currentPage = Int(self.selectedHiddenItem/self.itemPerPage)
                         
                         //Set the index as selected
                         self.collectionView.selectItem(at: IndexPath(item: self.currentIndex, section: 0), animated: false, scrollPosition: [])
@@ -197,14 +288,8 @@ public final class AZTabBarController:UIViewController,UICollectionViewDelegateF
                         //Scroll to the selected section (because when reloading we will be at the first index) with no animation
                         self.collectionView.scrollToItem(at: IndexPath(item: self.selectedHiddenItem, section: 0), at: .left, animated: true)
                         
-                        
                 })
-                
-                
-                
-                
         })
-
     }
     
     
@@ -259,7 +344,7 @@ public final class AZTabBarController:UIViewController,UICollectionViewDelegateF
         }else{
             itemCell.backgroundColor = UIColor.clear
         }
-
+        
         return itemCell
     }
     
@@ -274,7 +359,7 @@ public final class AZTabBarController:UIViewController,UICollectionViewDelegateF
             
             //Switch container view
             self.switchTab(to: indexPath.item)
-        
+            
             //Highlight cell
             let cell = self.collectionView.cellForItem(at: indexPath) as! AZTabBarItemCell
             cell.isSelected = true
@@ -298,6 +383,14 @@ public final class AZTabBarController:UIViewController,UICollectionViewDelegateF
     }
     
     public func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        
+        if indexPath.item == currentIndex {
+            cell.backgroundColor = highlightedItemColor
+        }else{
+            cell.backgroundColor = UIColor.clear
+        }
+        
+        
         //Update leftScrollButton case reached the left edge
         if indexPath.item == 0 {
             self.selectedHiddenItem = 0
@@ -373,11 +466,24 @@ public final class AZTabBarController:UIViewController,UICollectionViewDelegateF
         //setup tab bar background color
         self.tabBar.backgroundColor = self.tabBackgroundColor
         
-        //setup hairline color
-        self.tabBarSeperatorLine.layer.masksToBounds = false
-        self.tabBarSeperatorLine.layer.shadowOffset = CGSize(width:0,height: 0)
-        self.tabBarSeperatorLine.layer.shadowRadius = 5
-        self.tabBarSeperatorLine.layer.shadowOpacity = 0.5
+        //setup hairline
+        self.tabBarSeperatorLine.backgroundColor = self.sepratorColor
+        
+        //setup shadow - if enabled
+        if allowSeperatorShadow {
+            self.tabBarSeperatorLine.layer.masksToBounds = false
+            self.tabBarSeperatorLine.layer.shadowOffset = CGSize(width:0,height: 0)
+            self.tabBarSeperatorLine.layer.shadowRadius = 5
+            self.tabBarSeperatorLine.layer.shadowOpacity = 0.5
+        }
+        
+        //setup seperator height
+        if showSeperator {
+            self.seperatorConstraint.constant = seperatorHeight
+        }else{
+            self.seperatorConstraint.constant = 0
+        }
+        
         
         //setup collection view design
         self.collectionView.backgroundColor = self.tabBackgroundColor
@@ -442,8 +548,6 @@ public final class AZTabBarController:UIViewController,UICollectionViewDelegateF
         return image
     }
     
-    
-    
     private func scroll(to index:Int,animated:Bool){
         //Assert index
         if index >= 0 && index < self.itemAmount {
@@ -473,7 +577,7 @@ public final class AZTabBarController:UIViewController,UICollectionViewDelegateF
             scroll(to: selectedHiddenItem, animated: true)
             
         }
-        //else - we are in the middle
+            //else - we are in the middle
         else{
             //decrease the selected hidden item by "itemPerPage"
             selectedHiddenItem -= itemPerPage
