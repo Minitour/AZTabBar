@@ -12,7 +12,7 @@ class ViewController: UIViewController,AZTabBarDelegate,AZTabBarDataSource {
 
     
     //The line in the bottom of the navigation bar
-    private var hairLine:UIImageView!
+    //private var hairLine:UIImageView!
     var colors = [UIColor]()
     let size = 30
 
@@ -22,16 +22,16 @@ class ViewController: UIViewController,AZTabBarDelegate,AZTabBarDataSource {
         // Do any additional setup after loading the view, typically from a nib.
         
         //Find and initalize the hairline
-        for view in (self.navigationController?.navigationBar.subviews)! {
-            for bView in view.subviews {
-                if bView is UIImageView &&
-                    bView.bounds.size.width == self.navigationController?.navigationBar.frame.size.width &&
-                    bView.bounds.size.height < 2
-                {
-                    self.hairLine = bView as! UIImageView
-                }
-            }
-        }
+//        for view in (self.navigationController?.navigationBar.subviews)! {
+//            for bView in view.subviews {
+//                if bView is UIImageView &&
+//                    bView.bounds.size.width == self.navigationController?.navigationBar.frame.size.width &&
+//                    bView.bounds.size.height < 2
+//                {
+//                    self.hairLine = bView as! UIImageView
+//                }
+//            }
+//        }
         
         for _ in 0...size  {
             colors.append(getRandomColor())
@@ -58,12 +58,12 @@ class ViewController: UIViewController,AZTabBarDelegate,AZTabBarDataSource {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.hairLine.isHidden = true
+        //self.hairLine.isHidden = true
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        self.hairLine.isHidden = false
+        //self.hairLine.isHidden = false
     }
     
     func numberOfItemsInTabBar(_ tabBarController: AZTabBarController) -> Int {
@@ -96,9 +96,13 @@ class ViewController: UIViewController,AZTabBarDelegate,AZTabBarDataSource {
     
     
     func stickerTabBar(_ tabBarController: AZTabBarController, contentViewForPageAtIndex index: Int) -> (contentView: UIView, controller: UIViewController?) {
-        let view = UIView()
-        view.backgroundColor = colors[index]
-        return (view,nil)
+        let label = UILabel()
+        label.font = label.font.withSize(27)
+        label.text = "Your Content View \(index+1)"
+        label.textColor = UIColor.lightGray
+        label.textAlignment = .center
+        //view.backgroundColor = colors[index]
+        return (label,nil)
     }
     
     private func getRandomColor() -> UIColor{
