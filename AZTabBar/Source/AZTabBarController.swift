@@ -253,7 +253,7 @@ public final class AZTabBarController:UIViewController,UICollectionViewDelegateF
         initUiDesign()
         
         //Set the page using the selected index
-        switchTab(to: currentIndex)
+        switchTab(to: currentIndex, from: -1  )
         
         didInit = true
     }
@@ -376,7 +376,7 @@ public final class AZTabBarController:UIViewController,UICollectionViewDelegateF
         if indexPath.item != currentIndex {
             
             //Switch container view
-            self.switchTab(to: indexPath.item)
+            self.switchTab(to: indexPath.item,from: currentIndex)
             
             //Highlight cell
             let cell = self.collectionView.cellForItem(at: indexPath) as! AZTabBarItemCell
@@ -456,11 +456,18 @@ public final class AZTabBarController:UIViewController,UICollectionViewDelegateF
      * Private Methods
      */
     
-    private func switchTab(to index:Int){
+    private func switchTab(to index:Int,from oldIndex:Int){
         
         //Remove any subviews from the container
         for view in self.viewContainer.subviews {
             view.removeFromSuperview()
+        }
+        
+        //remove old controller from parent controller
+        if oldIndex != -1 {
+            if let oldViewController = self.dataSource.stickerTabBar(self, contentViewForPageAtIndex: oldIndex).controller {
+                oldViewController.removeFromParentViewController()
+            }
         }
         
         //Add child view controller if found
@@ -472,7 +479,12 @@ public final class AZTabBarController:UIViewController,UICollectionViewDelegateF
         let view = self.dataSource.stickerTabBar(self, contentViewForPageAtIndex: index).contentView
         
         //Insert the container at the bottom
-        self.viewContainer.insertSubview(view, at: 0)
+        self.viewContainer.addSubview(view)
+        
+        //call did move on the new controller
+        if let childController = self.dataSource.stickerTabBar(self, contentViewForPageAtIndex: index).controller {
+            childController.didMove(toParentViewController: self)
+        }
         
         //setup layout constaints
         view.snp_makeConstraints { (make) in

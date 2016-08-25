@@ -14,6 +14,7 @@ class ViewController: UIViewController,AZTabBarDelegate,AZTabBarDataSource {
     //The line in the bottom of the navigation bar
     //private var hairLine:UIImageView!
     var colors = [UIColor]()
+    var controllers = [UIViewController]()
     let size = 30
 
     
@@ -35,6 +36,14 @@ class ViewController: UIViewController,AZTabBarDelegate,AZTabBarDataSource {
         
         for _ in 0...size  {
             colors.append(getRandomColor())
+        }
+        
+        for index in 0...size{
+            let controller:ContentViewController = storyboard?.instantiateViewController(withIdentifier: "ContentViewController") as! ContentViewController
+            //controller.view.backgroundColor = self.colors[index]
+            controller.textToDisplay = "Content View \(index+1)"
+            //controller.backgroundColor = self.colors[index]
+            self.controllers.append(controller)
         }
         
         let controller = AZTabBarController.standardController()
@@ -96,13 +105,13 @@ class ViewController: UIViewController,AZTabBarDelegate,AZTabBarDataSource {
     
     
     func stickerTabBar(_ tabBarController: AZTabBarController, contentViewForPageAtIndex index: Int) -> (contentView: UIView, controller: UIViewController?) {
-        let label = UILabel()
-        label.font = label.font.withSize(27)
-        label.text = "Your Content View \(index+1)"
-        label.textColor = UIColor.lightGray
-        label.textAlignment = .center
-        //view.backgroundColor = colors[index]
-        return (label,nil)
+//        let label = UILabel()
+//        label.font = label.font.withSize(27)
+//        label.text = "Your Content View \(index+1)"
+//        label.textColor = UIColor.lightGray
+//        label.textAlignment = .center
+        //(self.controllers[index] as? ContentViewController)?.label.text = "Content View \(index+1)"
+        return (self.controllers[index].view,self.controllers[index])
     }
     
     private func getRandomColor() -> UIColor{
@@ -114,6 +123,9 @@ class ViewController: UIViewController,AZTabBarDelegate,AZTabBarDataSource {
 
 
 }
+
+
+
 
 
 
