@@ -6,12 +6,13 @@
 //
 
 import Foundation
+import QuartzCore
 import UIKit
 
 public final class AZTabBarController:UIViewController,UICollectionViewDelegateFlowLayout,UICollectionViewDataSource {
     
     public class func standardController()->AZTabBarController{
-        return UIStoryboard(name: R.xib.storyboard, bundle: Bundle(for: self)).instantiateViewController(withIdentifier: R.xib.controller) as! AZTabBarController
+        return UIStoryboard(name: AZTabBar.R.xib.storyboard, bundle: Bundle(for: self)).instantiateViewController(withIdentifier: AZTabBar.R.xib.controller) as! AZTabBarController
     }
     
     /*
@@ -27,6 +28,7 @@ public final class AZTabBarController:UIViewController,UICollectionViewDelegateF
     //The container that holdes the content
     @IBOutlet weak var viewContainer: UIView!
     
+    @IBOutlet weak var menuView: UIView!
     /*
      * Inner Views
      */
@@ -43,7 +45,25 @@ public final class AZTabBarController:UIViewController,UICollectionViewDelegateF
     //The collectionview that holds the inner tabs
     @IBOutlet weak var collectionView: UICollectionView!
     
+    //height of the seperator view
     @IBOutlet weak var seperatorConstraint: NSLayoutConstraint!
+    
+    
+    //The Button inside the menuView
+    @IBOutlet weak var menuDismissButton: UIButton!
+    
+    @IBOutlet weak var customMenuIcon: UIImageView!
+    
+    @IBOutlet weak var customMenuTitle: UILabel!
+    
+    @IBOutlet weak var customMenuSeperator: UIView!
+    
+    //Custom menu view holder
+    @IBOutlet weak var customMenuView: UIView!
+    
+    @IBOutlet weak var customMenuTab: UIView!
+    
+    @IBOutlet weak var menuSeperatorConstraint: NSLayoutConstraint!
     
     /*
      * Public Properties
@@ -56,10 +76,10 @@ public final class AZTabBarController:UIViewController,UICollectionViewDelegateF
     public var dataSource:AZTabBarDataSource!
     
     //Background color of the tab bar
-    public var tabBackgroundColor = R.color.background
+    public var tabBackgroundColor = AZTabBar.R.color.background
     
     //Background color of the navigation control buttons
-    public var arrowBackgroundColor:UIColor = R.color.arrow
+    public var arrowBackgroundColor:UIColor = AZTabBar.R.color.arrow
     
     //tint color of the buttons
     public var arrowColor:UIColor!{
@@ -73,7 +93,7 @@ public final class AZTabBarController:UIViewController,UICollectionViewDelegateF
     }
     
     //Background color of the menu button
-    public var menuBackgroundColor:UIColor = R.color.menu
+    public var menuBackgroundColor:UIColor = AZTabBar.R.color.menu
     
     //tint color of the menu button
     public var menuIconColor:UIColor!{
@@ -85,10 +105,14 @@ public final class AZTabBarController:UIViewController,UICollectionViewDelegateF
     }
     
     //The color of the hairline (view) under the tab bar
-    public var sepratorColor:UIColor = R.color.seperator{
+    public var sepratorColor:UIColor = AZTabBar.R.color.seperator{
         didSet{
             if self.tabBarSeperatorLine != nil{
                 self.tabBarSeperatorLine.backgroundColor = sepratorColor
+            }
+            
+            if self.customMenuSeperator != nil {
+                self.customMenuSeperator.backgroundColor = sepratorColor
             }
         }
     }
@@ -103,11 +127,20 @@ public final class AZTabBarController:UIViewController,UICollectionViewDelegateF
                     }
                 }
             }
+            
+            if self.menuSeperatorConstraint != nil {
+                if seperatorHeight != oldValue{
+                    if showSeperator {
+                        self.menuSeperatorConstraint.constant = seperatorHeight
+                    }
+                }
+            }
+            
         }
     }
     
     //Enable/Disable shadow
-    public var allowSeperatorShadow:Bool = R.settings.shadow{
+    public var allowSeperatorShadow:Bool = AZTabBar.R.settings.shadow{
         didSet{
             if self.tabBarSeperatorLine != nil {
                 
@@ -116,13 +149,24 @@ public final class AZTabBarController:UIViewController,UICollectionViewDelegateF
                     if allowSeperatorShadow {
                         self.tabBarSeperatorLine.layer.masksToBounds = false
                         self.tabBarSeperatorLine.layer.shadowOffset = CGSize(width:0,height: 0)
-                        self.tabBarSeperatorLine.layer.shadowRadius = R.ui.radius
-                        self.tabBarSeperatorLine.layer.shadowOpacity = R.ui.shadow
+                        self.tabBarSeperatorLine.layer.shadowRadius = AZTabBar.R.ui.radius
+                        self.tabBarSeperatorLine.layer.shadowOpacity = AZTabBar.R.ui.shadow
+                        
+                        self.customMenuSeperator.layer.masksToBounds = false
+                        self.customMenuSeperator.layer.shadowOffset = CGSize(width:0,height: 0)
+                        self.customMenuSeperator.layer.shadowRadius = AZTabBar.R.ui.radius
+                        self.customMenuSeperator.layer.shadowOpacity = AZTabBar.R.ui.shadow
+                        
                     }else{
                         self.tabBarSeperatorLine.layer.masksToBounds = false
                         self.tabBarSeperatorLine.layer.shadowOffset = CGSize(width:0,height: 0)
-                        self.tabBarSeperatorLine.layer.shadowRadius = R.ui.radius
+                        self.tabBarSeperatorLine.layer.shadowRadius = AZTabBar.R.ui.radius
                         self.tabBarSeperatorLine.layer.shadowOpacity = 0
+                        
+                        self.customMenuSeperator.layer.masksToBounds = false
+                        self.customMenuSeperator.layer.shadowOffset = CGSize(width:0,height: 0)
+                        self.customMenuSeperator.layer.shadowRadius = AZTabBar.R.ui.radius
+                        self.customMenuSeperator.layer.shadowOpacity = 0
                     }
                     
                 }
@@ -131,7 +175,7 @@ public final class AZTabBarController:UIViewController,UICollectionViewDelegateF
     }
     
     //Hide/Show seperator
-    public var showSeperator:Bool = R.settings.seprator{
+    public var showSeperator:Bool = AZTabBar.R.settings.seprator{
         didSet{
             if self.seperatorConstraint != nil {
                 if showSeperator != oldValue {
@@ -142,14 +186,24 @@ public final class AZTabBarController:UIViewController,UICollectionViewDelegateF
                     }
                 }
             }
+            
+            if self.menuSeperatorConstraint != nil{
+                if showSeperator != oldValue {
+                    if showSeperator {
+                        self.menuSeperatorConstraint.constant = seperatorHeight
+                    }else{
+                        self.menuSeperatorConstraint.constant = 0
+                    }
+                }
+            }
         }
     }
     
     //The background color of inner tabs when highlighted
-    public var highlightedItemColor:UIColor = R.color.highlight
+    public var highlightedItemColor:UIColor = AZTabBar.R.color.highlight
     
     //Enable or Disable the scroll view of the collection view
-    public var isScrollEnabled:Bool = R.settings.scroll {
+    public var isScrollEnabled:Bool = AZTabBar.R.settings.scroll {
         didSet{
             if self.collectionView != nil {
                 self.collectionView.isScrollEnabled = isScrollEnabled
@@ -157,14 +211,13 @@ public final class AZTabBarController:UIViewController,UICollectionViewDelegateF
         }
     }
     
-    public var isPagingEnabled:Bool = R.settings.page {
+    public var isPagingEnabled:Bool = AZTabBar.R.settings.page {
         didSet{
             if self.collectionView != nil {
                 self.collectionView.isPagingEnabled = isPagingEnabled
             }
         }
     }
-    
     
     //The Current Selected Index
     public var currentIndex:Int = 0{
@@ -177,7 +230,26 @@ public final class AZTabBarController:UIViewController,UICollectionViewDelegateF
             }else {
                 //Attempt to change the current index before setting the data source.
                 currentIndex = 0
-                NSLog("Error", "You must set the data source before attempting to change the index.")
+                print(AZTabBar.R.strings.error.change_index)
+            }
+        }
+    }
+    
+    public var isCustomMenuEnabled = false
+    
+    public var isMenuViewHidden = true {
+        didSet{
+            if isCustomMenuEnabled {
+             
+                if self.menuView != nil {
+                    
+                    if isMenuViewHidden != oldValue {
+                       self.menuView.isHidden = isMenuViewHidden
+                    }
+                }
+                
+            }else{
+                print(AZTabBar.R.strings.error.menu_not_enabled)
             }
         }
     }
@@ -191,8 +263,16 @@ public final class AZTabBarController:UIViewController,UICollectionViewDelegateF
         didSet{
             
             if currentPage != oldValue {
-                self.delegate.stickerTabBar(self, didChangeToPage: currentPage,from: oldValue)
+                self.delegate.stickerTabBar!(self, didChangeToPage: currentPage,from: oldValue)
             }
+        }
+    }
+    
+    //Track menu animations to disable interaction when needed
+    private var isMenuViewAnimating = false {
+        didSet{
+            menuButton.isUserInteractionEnabled = !isMenuViewAnimating
+            menuDismissButton.isUserInteractionEnabled = !isMenuViewAnimating
         }
     }
     
@@ -212,6 +292,7 @@ public final class AZTabBarController:UIViewController,UICollectionViewDelegateF
     private var didInitHighlight = false
     
     private var didInit = false
+    
     
     /*
      * UIViewController Methods
@@ -238,7 +319,7 @@ public final class AZTabBarController:UIViewController,UICollectionViewDelegateF
         
         
         //Register AZTabBarItemCell
-        self.collectionView.register(UINib(nibName: "AZTabBarItemCell", bundle: nil), forCellWithReuseIdentifier: AZTabBarItemCell.id())
+        self.collectionView.register(UINib(nibName: AZTabBar.R.xib.cellXib, bundle: nil), forCellWithReuseIdentifier: AZTabBarItemCell.id())
         
         //Setup item amount
         self.itemAmount = self.dataSource.numberOfItemsInTabBar(self)
@@ -255,11 +336,17 @@ public final class AZTabBarController:UIViewController,UICollectionViewDelegateF
         //Set the page using the selected index
         switchTab(to: currentIndex, from: -1  )
         
+        
+        
+        
         didInit = true
+        
+        
     }
     
     override public func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+
         self.selectedHiddenItem = currentIndex % itemPerPage != 0 ? currentIndex - (currentIndex % itemPerPage)  : currentIndex
         self.currentPage = Int(selectedHiddenItem/itemPerPage)
         
@@ -388,7 +475,7 @@ public final class AZTabBarController:UIViewController,UICollectionViewDelegateF
             self.currentIndex = indexPath.item
             
             //Call delegate methods
-            self.delegate.stickerTabBar(self, didChangeToItem: currentIndex)
+            self.delegate.stickerTabBar!(self, didChangeToItem: currentIndex)
         }
         
     }
@@ -491,6 +578,39 @@ public final class AZTabBarController:UIViewController,UICollectionViewDelegateF
             make.edges.equalTo(self.viewContainer)
         }
         
+        //init custom menu view
+        
+        if self.isCustomMenuEnabled {
+            
+            for view in self.customMenuView.subviews {
+                view.removeFromSuperview()
+            }
+            
+            if let subView = self.dataSource.stickerTabBar(self, menuViewForIndex: index).view {
+                self.customMenuView.addSubview(subView)
+                
+                subView.snp_makeConstraints(closure: { (make) in
+                    make.edges.equalTo(self.customMenuView)
+                })
+            }
+            
+            if let image = self.dataSource.stickerTabBar(self, menuViewForIndex: index).icon {
+                self.customMenuIcon.isHidden = false
+                self.customMenuIcon.image = image
+            }else{
+                self.customMenuIcon.isHidden = true
+                self.customMenuIcon.image = nil
+            }
+            
+            if let title = self.dataSource.stickerTabBar(self, menuViewForIndex: index).title {
+                self.customMenuTitle.isHidden = false
+                self.customMenuTitle.text = title
+            }else{
+                self.customMenuTitle.isHidden = true
+                self.customMenuTitle.text = ""
+            }
+        }
+        
     }
     
     private func initUiDesign(){
@@ -510,51 +630,75 @@ public final class AZTabBarController:UIViewController,UICollectionViewDelegateF
         //setup hairline
         self.tabBarSeperatorLine.backgroundColor = self.sepratorColor
         
+        self.customMenuSeperator.backgroundColor = self.sepratorColor
+        
         //setup shadow - if enabled
         if allowSeperatorShadow {
             self.tabBarSeperatorLine.layer.masksToBounds = false
             self.tabBarSeperatorLine.layer.shadowOffset = CGSize(width:0,height: 0)
-            self.tabBarSeperatorLine.layer.shadowRadius = R.ui.radius
-            self.tabBarSeperatorLine.layer.shadowOpacity = R.ui.shadow
+            self.tabBarSeperatorLine.layer.shadowRadius = AZTabBar.R.ui.radius
+            self.tabBarSeperatorLine.layer.shadowOpacity = AZTabBar.R.ui.shadow
+            
+            self.customMenuSeperator.layer.masksToBounds = false
+            self.customMenuSeperator.layer.shadowOffset = CGSize(width:0,height: 0)
+            self.customMenuSeperator.layer.shadowRadius = AZTabBar.R.ui.radius
+            self.customMenuSeperator.layer.shadowOpacity = AZTabBar.R.ui.shadow
         }
         
         //setup seperator height
         if showSeperator {
             self.seperatorConstraint.constant = seperatorHeight
+            self.menuSeperatorConstraint.constant = seperatorHeight
+            
         }else{
             self.seperatorConstraint.constant = 0
+            self.menuSeperatorConstraint.constant = 0
         }
         
         
         //setup collection view design
         self.collectionView.backgroundColor = self.tabBackgroundColor
         
+        //init inner menu view design
+        self.menuView.backgroundColor = self.tabBackgroundColor
+        self.customMenuTab.backgroundColor = self.tabBackgroundColor
+        self.customMenuView.backgroundColor = self.tabBackgroundColor
+        
+        
         //setup menu button design
         self.menuButton.setBackgroundImage(getImageWithColor(color: self.menuBackgroundColor, size: self.menuButton.bounds.size), for: [])
         self.menuButton.setBackgroundImage(getImageWithColor(color: self.menuBackgroundColor, size: self.menuButton.bounds.size), for: UIControlState.highlighted)
-        self.menuButton.layer.cornerRadius = R.ui.radius
+        self.menuButton.layer.cornerRadius = AZTabBar.R.ui.radius
         self.menuButton.clipsToBounds = true
         self.menuButton.tintColor = menuIconColor
+        
+        //setup dismiss menu button design
+        self.menuDismissButton.setBackgroundImage(getImageWithColor(color: self.menuBackgroundColor, size: self.menuButton.bounds.size), for: [])
+        self.menuDismissButton.setBackgroundImage(getImageWithColor(color: self.menuBackgroundColor, size: self.menuButton.bounds.size), for: UIControlState.highlighted)
+        self.menuDismissButton.layer.cornerRadius = AZTabBar.R.ui.radius
+        self.menuDismissButton.clipsToBounds = true
+        self.menuDismissButton.tintColor = menuIconColor
         
         
         //setup left/right arrow design
         self.leftScrollButton.setBackgroundImage(getImageWithColor(color: self.arrowBackgroundColor, size: self.menuButton.bounds.size), for: [])
         self.leftScrollButton.setBackgroundImage(getImageWithColor(color: self.arrowBackgroundColor, size: self.menuButton.bounds.size), for: UIControlState.highlighted)
-        self.leftScrollButton.layer.cornerRadius = R.ui.radius 
+        self.leftScrollButton.layer.cornerRadius = AZTabBar.R.ui.radius
         self.leftScrollButton.clipsToBounds = true
         
         self.rightScrollButton.setBackgroundImage(getImageWithColor(color: self.arrowBackgroundColor, size: self.menuButton.bounds.size), for: [])
         self.rightScrollButton.setBackgroundImage(getImageWithColor(color: self.arrowBackgroundColor, size: self.menuButton.bounds.size), for: UIControlState.highlighted)
-        self.rightScrollButton.layer.cornerRadius = R.ui.radius
+        self.rightScrollButton.layer.cornerRadius = AZTabBar.R.ui.radius
         self.rightScrollButton.clipsToBounds = true
         
         self.rightScrollButton.tintColor = arrowColor
         self.leftScrollButton.tintColor = arrowColor
         
         //Setup icons
-        self.leftScrollButton.setImage(UIImage(named:R.assets.left), for: [])
-        self.rightScrollButton.setImage(UIImage(named:R.assets.right), for: [])
-        self.menuButton.setImage(UIImage(named:R.assets.menu), for: [])
+        self.leftScrollButton.setImage(UIImage(named:AZTabBar.R.assets.left), for: [])
+        self.rightScrollButton.setImage(UIImage(named:AZTabBar.R.assets.right), for: [])
+        self.menuButton.setImage(UIImage(named:AZTabBar.R.assets.menu), for: [])
+        self.menuDismissButton.setImage(UIImage(named: AZTabBar.R.assets.close), for: [])
         
     }
     
@@ -571,9 +715,13 @@ public final class AZTabBarController:UIViewController,UICollectionViewDelegateF
         
         self.menuButton.addTarget(self, action: #selector(AZTabBarController.clickMenu(sender:)), for: .touchUpInside)
         
+        self.menuDismissButton.addTarget(self, action: #selector(AZTabBarController.clickDismissMenu(sender:)), for: .touchUpInside)
+        
         self.leftScrollButton.isExclusiveTouch = true
         self.rightScrollButton.isExclusiveTouch = true
         self.menuButton.isExclusiveTouch = true
+        
+        
         
         
     }
@@ -703,12 +851,163 @@ public final class AZTabBarController:UIViewController,UICollectionViewDelegateF
     }
     
     public func clickMenu(sender: UIView){
-        self.delegate.stickerTabBar(self, didSelectMenu: sender)
+        self.delegate.stickerTabBar!(self, didSelectMenu: sender,at:currentIndex)
+        
+        setMenu(hidden: false, animated: true)
+        
+    }
+    
+    public func clickDismissMenu(sender:AnyObject){
+        setMenu(hidden: true, animated: true)
+    }
+    
+    
+    private func showCustomMenu(for view:UIView,to point:CGRect){
+        
+        view.isHidden = false
+        
+        let bounds = view.bounds
+        
+        let maskDiamter = CGFloat(sqrt(powf(Float(view.bounds.width), 2)
+            + powf(Float(view.bounds.height), 2)) * 2)
+        
+        let rectShape = CAShapeLayer()
+        rectShape.bounds = bounds
+        rectShape.position = CGPoint(x: view.frame.origin.x, y: view.frame.origin.y)
+        rectShape.cornerRadius = maskDiamter
+        //view.layer.addSublayer(rectShape)
+        view.layer.mask = rectShape
+        view.layer.masksToBounds = true
+        
+        //rectShape.fillColor = UIColor.yellow.cgColor
+        
+        
+        let startShape = UIBezierPath(roundedRect: CGRect(x: point.origin.x, y: point.origin.y, width: 0, height: 0), cornerRadius: 0).cgPath
+        let endShape = UIBezierPath(roundedRect: CGRect(origin: bounds.origin, size: CGSize(width: maskDiamter, height: maskDiamter)), cornerRadius: maskDiamter).cgPath
+        
+        
+        //UIBezierPath(roundedRect: bounds.origin, byRoundingCorners: [.bottomRight], cornerRadii: CGSize(width: maskDiamter/2, height: maskDiamter/2))
+        // animation end with a large circle with 500 points radius
+        
+        
+        rectShape.path = startShape
+        
+        CATransaction.begin()
+        self.isMenuViewAnimating = true
+        let animation = CABasicAnimation(keyPath: "path")
+        animation.toValue = endShape
+        animation.duration = AZTabBar.R.ui.animation
+        animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut) // animation curve is Ease Out
+        animation.fillMode = kCAFillModeBoth // keep to value after finishing
+        animation.isRemovedOnCompletion = false
+        
+        
+        
+        CATransaction.setCompletionBlock {
+            view.layer.mask?.removeFromSuperlayer()
+            self.isMenuViewAnimating = false
+        }
+        rectShape.add(animation, forKey: animation.keyPath)
+        
+        CATransaction.commit()
+        
+    }
+    
+    private func hideCustomMenu(for view:UIView,to point:CGRect){
+        
+        let bounds = view.bounds
+        
+        //calculate diamter
+        let maskDiamter = CGFloat(sqrt(powf(Float(view.bounds.width), 2) + powf(Float(view.bounds.height), 2)) * 2)
+        
+        //Create CAShapeLayer object
+        let rectShape = CAShapeLayer()
+        
+        //set the layer bounds to current bounds of the view
+        rectShape.bounds = bounds
+        
+        //set the position of the layer using the current point (origin) of the view
+        rectShape.position = CGPoint(x: view.frame.origin.x, y: view.frame.origin.y)
+        
+        //set the corner radius as the mask diamter
+        rectShape.cornerRadius = maskDiamter
+        
+        //set the layer as mask for the view which we wanna hide
+        view.layer.mask = rectShape
+        
+        //set mask to bounds - this is important
+        view.layer.masksToBounds = true
+        
+        //create the start path using the view's current paramters
+        //@roundedRect - origin: is where the animation will start,size: is the size of the showing animation make sure its width and height are using the mask diamter value
+        let startShape = UIBezierPath(roundedRect: CGRect(origin: bounds.origin, size: CGSize(width: maskDiamter, height: maskDiamter)), cornerRadius: maskDiamter).cgPath
+        
+        //endShape is where the layer should end up, with the origin of the object "point" we provided as parameter. Height and Width must be set to 0, since we are hiding the view.
+        let endShape = UIBezierPath(roundedRect: CGRect(x: point.origin.x, y: point.origin.y, width: 0, height: 0), cornerRadius: 0).cgPath
+        
+        //Set the path on rectShape (which is a pointer to out layer.mask)
+        rectShape.path = startShape
+        
+        //mark animation begining
+        CATransaction.begin()
+        self.isMenuViewAnimating = true
+        
+        //Create CABasicAnimation object, to animate with key "path"
+        let animation = CABasicAnimation(keyPath: "path")
+        
+        //set the to value the end shape (our goal shape)
+        animation.toValue = endShape
+        
+        //set the duration of the animation
+        animation.duration = AZTabBar.R.ui.animation
+        
+        //set timing function, to keep it smooth
+        animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
+        
+        // keep to value after finishing
+        animation.fillMode = kCAFillModeBoth
+        
+        animation.isRemovedOnCompletion = false
+    
+        //Add completion block, will be called upon end of animation
+        CATransaction.setCompletionBlock { 
+            view.isHidden = true
+            view.layer.mask?.removeFromSuperlayer()
+            self.isMenuViewAnimating = false
+        }
+        
+        //add the animation to the rectShape object (our pointer to view.layer.mask)
+        rectShape.add(animation, forKey: animation.keyPath)
+        
+        //commit tranasaction
+        CATransaction.commit()
+        
     }
     
     /*
      * Public Methods
      */
+    
+    public func setMenu(hidden toHide:Bool, animated:Bool){
+        if isCustomMenuEnabled {
+            if toHide {
+                if animated {
+                    hideCustomMenu(for: menuView,to: CGRect(origin: CGPoint(x: 0, y: 0), size: CGSize(width: 0,height: 0)))
+                }
+                self.isMenuViewHidden = true
+            }else{
+                if animated {
+                    showCustomMenu(for: menuView, to: menuView.bounds)
+                }
+                else {
+                    self.isMenuViewHidden = false
+                }
+            }
+        }else{
+            print(AZTabBar.R.strings.error.menu_not_enabled)
+        }
+        
+    }
     
     public func selectedPage()->Int {
         return self.currentPage
@@ -720,3 +1019,6 @@ public final class AZTabBarController:UIViewController,UICollectionViewDelegateF
     }
     
 }
+
+
+

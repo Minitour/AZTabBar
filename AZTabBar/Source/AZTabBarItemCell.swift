@@ -12,7 +12,7 @@ class AZTabBarItemCell:UICollectionViewCell{
     
     
     static func id()->String {
-        return R.xib.cell
+        return AZTabBar.R.xib.cell
     }
     
     

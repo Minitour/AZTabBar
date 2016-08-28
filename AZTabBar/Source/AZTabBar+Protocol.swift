@@ -8,25 +8,27 @@
 import Foundation
 import UIKit
 
-public protocol AZTabBarDelegate {
+@objc public protocol AZTabBarDelegate {
     
     /*
      * Triggered when clicking the menu button.
      */
-    func stickerTabBar(_ tabBarController: AZTabBarController, didSelectMenu menu:UIView)
+    @objc optional func stickerTabBar(_ tabBarController: AZTabBarController, didSelectMenu menu:UIView, at index:Int)
+    
+    @objc optional func stickerTabBar(_ tabBarController: AZTabBarController, didCloseMenu menu:UIView, at index:Int)
     
     /*
      * Triggered when navigating between pages.
      */
-    func stickerTabBar(_ tabBarController: AZTabBarController, didChangeToPage index:Int ,from oldPage:Int)
+    @objc optional func stickerTabBar(_ tabBarController: AZTabBarController, didChangeToPage index:Int ,from oldPage:Int)
     
     /*
      * Triggered when changing to a new item.
      */
-    func stickerTabBar(_ tabBarController: AZTabBarController, didChangeToItem index:Int)
+    @objc optional func stickerTabBar(_ tabBarController: AZTabBarController, didChangeToItem index:Int)
 }
 
-public protocol AZTabBarDataSource {
+ public protocol AZTabBarDataSource {
     
     /*
      * Returns the amount of items inside the tab.
@@ -43,4 +45,9 @@ public protocol AZTabBarDataSource {
      * controller:UIViewController - is the UIViewController that holds the content view (if exists).
      */
     func stickerTabBar(_ tabBarController: AZTabBarController, contentViewForPageAtIndex index: Int) -> ( contentView:UIView,controller:UIViewController?)
+    
+    /*
+     * A Custom menu view
+     */
+    func stickerTabBar(_ tabBarController: AZTabBarController, menuViewForIndex index:Int) -> (view:UIView?,icon:UIImage?,title:String?)
 }

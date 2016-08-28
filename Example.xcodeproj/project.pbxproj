@@ -28,6 +28,8 @@
 		4F7447E11D6DED8400423F82 /* ViewController+SnapKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7447D41D6DED8400423F82 /* ViewController+SnapKit.swift */; };
 		4F7447E31D6DF0C400423F82 /* Resources.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7447E21D6DF0C400423F82 /* Resources.swift */; };
 		4F7447E81D6EE3B700423F82 /* ContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7447E71D6EE3B700423F82 /* ContentViewController.swift */; };
+		4F7447ED1D6EE9AC00423F82 /* AZTabBarScrollController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7447EC1D6EE9AC00423F82 /* AZTabBarScrollController.swift */; };
+		4F7447EF1D6EEDAB00423F82 /* AZTabBarScroll+Protocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7447EE1D6EEDAB00423F82 /* AZTabBarScroll+Protocol.swift */; };
 		4F98B4F41D6C7D3D0065111C /* AZTabBar+Protocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F98B4EE1D6C7D3D0065111C /* AZTabBar+Protocol.swift */; };
 		4F98B4F51D6C7D3D0065111C /* AZTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F98B4EF1D6C7D3D0065111C /* AZTabBarController.swift */; };
 		4F98B4F61D6C7D3D0065111C /* AZTabBarItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F98B4F01D6C7D3D0065111C /* AZTabBarItemCell.swift */; };
@@ -59,6 +61,8 @@
 		4F7447D41D6DED8400423F82 /* ViewController+SnapKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ViewController+SnapKit.swift"; sourceTree = "<group>"; };
 		4F7447E21D6DF0C400423F82 /* Resources.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Resources.swift; sourceTree = "<group>"; };
 		4F7447E71D6EE3B700423F82 /* ContentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentViewController.swift; sourceTree = "<group>"; };
+		4F7447EC1D6EE9AC00423F82 /* AZTabBarScrollController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AZTabBarScrollController.swift; sourceTree = "<group>"; };
+		4F7447EE1D6EEDAB00423F82 /* AZTabBarScroll+Protocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AZTabBarScroll+Protocol.swift"; sourceTree = "<group>"; };
 		4F98B4741D6B029B0065111C /* AZTabBar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AZTabBar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F98B4EE1D6C7D3D0065111C /* AZTabBar+Protocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AZTabBar+Protocol.swift"; sourceTree = "<group>"; };
 		4F98B4EF1D6C7D3D0065111C /* AZTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AZTabBarController.swift; sourceTree = "<group>"; };
@@ -146,7 +150,9 @@
 			isa = PBXGroup;
 			children = (
 				4F98B4EE1D6C7D3D0065111C /* AZTabBar+Protocol.swift */,
+				4F7447EE1D6EEDAB00423F82 /* AZTabBarScroll+Protocol.swift */,
 				4F98B4EF1D6C7D3D0065111C /* AZTabBarController.swift */,
+				4F7447EC1D6EE9AC00423F82 /* AZTabBarScrollController.swift */,
 				4F98B4F01D6C7D3D0065111C /* AZTabBarItemCell.swift */,
 				4F7447E21D6DF0C400423F82 /* Resources.swift */,
 			);
@@ -251,7 +257,9 @@
 				4F7447C01D6DEC5700423F82 /* AppDelegate.swift in Sources */,
 				4F7447E81D6EE3B700423F82 /* ContentViewController.swift in Sources */,
 				4F98B4F61D6C7D3D0065111C /* AZTabBarItemCell.swift in Sources */,
+				4F7447ED1D6EE9AC00423F82 /* AZTabBarScrollController.swift in Sources */,
 				4F98B4F51D6C7D3D0065111C /* AZTabBarController.swift in Sources */,
+				4F7447EF1D6EEDAB00423F82 /* AZTabBarScroll+Protocol.swift in Sources */,
 				4F7447D71D6DED8400423F82 /* ConstraintDescription.swift in Sources */,
 				4F7447DB1D6DED8400423F82 /* Debugging.swift in Sources */,
 				4F7447E01D6DED8400423F82 /* View+SnapKit.swift in Sources */,
