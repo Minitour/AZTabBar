@@ -15,6 +15,7 @@ public final class AZTabBarController:UIViewController,UICollectionViewDelegateF
         return UIStoryboard(name: AZTabBar.R.xib.storyboard, bundle: Bundle(for: self)).instantiateViewController(withIdentifier: AZTabBar.R.xib.controller) as! AZTabBarController
     }
     
+    
     /*
      * Outsider Views
      */
@@ -29,6 +30,8 @@ public final class AZTabBarController:UIViewController,UICollectionViewDelegateF
     @IBOutlet weak var viewContainer: UIView!
     
     @IBOutlet weak var menuView: UIView!
+    
+    
     /*
      * Inner Views
      */
@@ -49,21 +52,31 @@ public final class AZTabBarController:UIViewController,UICollectionViewDelegateF
     @IBOutlet weak var seperatorConstraint: NSLayoutConstraint!
     
     
+    /*
+     * Custom Menu Views
+     */
+    
     //The Button inside the menuView
     @IBOutlet weak var menuDismissButton: UIButton!
     
+    //Image View that is showen inside the custom menu view
     @IBOutlet weak var customMenuIcon: UIImageView!
     
+    //Label View that is showen inside the custom menu view
     @IBOutlet weak var customMenuTitle: UILabel!
     
+    //Seperator under the menuDismissButton, the customMenuIcon and CustomTitle
     @IBOutlet weak var customMenuSeperator: UIView!
     
     //Custom menu view holder
     @IBOutlet weak var customMenuView: UIView!
     
+    //Menu tab that holds all the buttons
     @IBOutlet weak var customMenuTab: UIView!
     
+    //The constraint of the custom menu seperator, we used this to show/hide the seperator
     @IBOutlet weak var menuSeperatorConstraint: NSLayoutConstraint!
+    
     
     /*
      * Public Properties
@@ -235,8 +248,10 @@ public final class AZTabBarController:UIViewController,UICollectionViewDelegateF
         }
     }
     
+    //Allow custom menu view, false by default
     public var isCustomMenuEnabled = false
     
+    //Show/Hide the custom Menu View, true by default, meaning the controller will launch with the menu view hidden.
     public var isMenuViewHidden = true {
         didSet{
             if isCustomMenuEnabled {
@@ -291,12 +306,14 @@ public final class AZTabBarController:UIViewController,UICollectionViewDelegateF
     //global flag, Do no change - used to check if the index was highlighted (starting index)
     private var didInitHighlight = false
     
+    //global flag, set to true once viewDidLoad has finished.
     private var didInit = false
     
     
     /*
      * UIViewController Methods
      */
+    
     override public func viewDidLoad() {
         super.viewDidLoad()
         
@@ -852,63 +869,91 @@ public final class AZTabBarController:UIViewController,UICollectionViewDelegateF
     
     public func clickMenu(sender: UIView){
         self.delegate.stickerTabBar!(self, didSelectMenu: sender,at:currentIndex)
-        
-        setMenu(hidden: false, animated: true)
+        if isCustomMenuEnabled {setMenu(hidden: false, animated: true)}
         
     }
     
-    public func clickDismissMenu(sender:AnyObject){
-        setMenu(hidden: true, animated: true)
+    public func clickDismissMenu(sender: UIView){
+        self.delegate.stickerTabBar!(self, didCloseMenu: sender, at: currentIndex)
+        if isCustomMenuEnabled{setMenu(hidden: true, animated: true)}
     }
-    
     
     private func showCustomMenu(for view:UIView,to point:CGRect){
         
+        //Change view visibility - we do this so we can actually see what is happening, remove this line and we won't see any changes.
         view.isHidden = false
         
+        //copy bounds - for convenience
         let bounds = view.bounds
         
-        let maskDiamter = CGFloat(sqrt(powf(Float(view.bounds.width), 2)
+        //get the diameter
+        let maskDiameter = CGFloat(sqrt(powf(Float(view.bounds.width), 2)
             + powf(Float(view.bounds.height), 2)) * 2)
-        
+        //Create CAShapeLayer object
         let rectShape = CAShapeLayer()
+        
+        //Set the bounds of the shape to match our current view bounds
         rectShape.bounds = bounds
+        
+        //Set the center point - make to to match the view we are hiding
         rectShape.position = CGPoint(x: view.frame.origin.x, y: view.frame.origin.y)
-        rectShape.cornerRadius = maskDiamter
-        //view.layer.addSublayer(rectShape)
+        
+        //Set the corner radius to match our maskDiameter value
+        rectShape.cornerRadius = maskDiameter
+        
+        //Set the CAShapeLayer object 'rectShape' on our view.layer.mask
         view.layer.mask = rectShape
+        
+        //Mask layer to bounds - must have this, otherwise we won't see anything happening
         view.layer.masksToBounds = true
         
-        //rectShape.fillColor = UIColor.yellow.cgColor
-        
-        
+        //Set the start shape using the origin of the given CGRect 'point' with width and height of 0. This is because we are showing the view, and so the mask must start with size of 0
         let startShape = UIBezierPath(roundedRect: CGRect(x: point.origin.x, y: point.origin.y, width: 0, height: 0), cornerRadius: 0).cgPath
-        let endShape = UIBezierPath(roundedRect: CGRect(origin: bounds.origin, size: CGSize(width: maskDiamter, height: maskDiamter)), cornerRadius: maskDiamter).cgPath
         
+        //Set the end shape using the original bounds of our rect. We can do that because the values (width and height) of the rect itself are not changing when we hide/show the view. The only thing that is changing is the layer mask and therefor we can relay on the original bounds and origin point of the rect as parameters for the end shape.
+        let endShape = UIBezierPath(roundedRect: CGRect(origin: bounds.origin, size: CGSize(width: maskDiameter, height: maskDiameter)), cornerRadius: maskDiameter).cgPath
         
-        //UIBezierPath(roundedRect: bounds.origin, byRoundingCorners: [.bottomRight], cornerRadii: CGSize(width: maskDiamter/2, height: maskDiamter/2))
-        // animation end with a large circle with 500 points radius
-        
-        
+        //Set the path as current shape - note that rectShape is a pointer to view.layer.mask, so by doing that we are modifying the mask of the view.
         rectShape.path = startShape
         
+        //Begin a new transaction for the current thread.
         CATransaction.begin()
+        
+        //Set the flag 'isMenuViewAnimating' to true.
         self.isMenuViewAnimating = true
+        
+        //Create the animation object
         let animation = CABasicAnimation(keyPath: "path")
+        
+        //Set the animation toValue to 'endShape'
         animation.toValue = endShape
+        
+        //Set the duration of the animation
         animation.duration = AZTabBar.R.ui.animation
-        animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut) // animation curve is Ease Out
-        animation.fillMode = kCAFillModeBoth // keep to value after finishing
+        
+        //An optional timing function defining the pacing of the animation.
+        animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
+        
+        //keep to value (layer.mask) after finishing
+        animation.fillMode = kCAFillModeBoth
+        
+        //When true, the animation is removed from the target layer’s animations once its active duration has passed.
         animation.isRemovedOnCompletion = false
         
-        
-        
+        //After transaction is completeded (animation is over)
         CATransaction.setCompletionBlock {
+            
+            //remove the mask
             view.layer.mask?.removeFromSuperlayer()
+            
+            //change the menu view animating flag
             self.isMenuViewAnimating = false
         }
+        
+        //Add the aniation to our rectShape object (pointer to view.layer.mask)
         rectShape.add(animation, forKey: animation.keyPath)
         
+        //Commit all changes made during the current transaction.
         CATransaction.commit()
         
     }

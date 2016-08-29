@@ -70,8 +70,6 @@ struct AZTabBar{
             //The id of the controller
             static let controller:String = "AZStickerTabController"
             
-            static let scrollController:String = "AZTabBarScrollController"
-            
             //The id of the cell
             static let cell:String = "AZTabBarItemCell"
             

@@ -15,6 +15,9 @@ import UIKit
      */
     @objc optional func stickerTabBar(_ tabBarController: AZTabBarController, didSelectMenu menu:UIView, at index:Int)
     
+    /*
+     * Triggered when closing the custom menu
+     */
     @objc optional func stickerTabBar(_ tabBarController: AZTabBarController, didCloseMenu menu:UIView, at index:Int)
     
     /*

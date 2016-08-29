@@ -50,8 +50,8 @@ class ViewController: UIViewController,AZTabBarDelegate,AZTabBarDataSource {
         controller.dataSource = self
         //controller.currentIndex = 7
         controller.tabBackgroundColor = UIColor(red: (247.0 / 255.0), green: (247.0 / 255.0), blue: (247.0 / 255.0), alpha: 1)
-        controller.isPagingEnabled = true
-        controller.isScrollEnabled = true
+        //controller.isPagingEnabled = true
+        //controller.isScrollEnabled = true
         controller.isCustomMenuEnabled = true
         addChildViewController(controller)
         controller.view.frame = self.view.frame
