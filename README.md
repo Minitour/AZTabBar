@@ -2,9 +2,7 @@
 A Tab Bar that does not require a swipe gesture to navigate
 
 ##Screenshots
-<img src="Screenshot/Simulator%20Screen%20Shot%20Aug%2024%2C%202016%2C%209.09.23%20PM.png"  height="300" />
-
-<img src="Screenshot/Simulator%20Screen%20Shot%20Aug%2024%2C%202016%2C%209.09.28%20PM.png"  height="200" />
+<img src="Screenshot/aztabbar.gif" height="300" />
 
 ##Installation
 
@@ -16,48 +14,51 @@ Implement the delegate and the data source protocols:
 ```swift
 class ViewController: UIViewController,AZTabBarDelegate,AZTabBarDataSource {
 
+    /**Required Data Source Methods**/
+     
     /*
      * Returns the amount of items inside the tab.
      */
-    func numberOfItemsInTabBar(_ tabBarController: AZTabBarController) -> Int {
-        return size
-    }
-    
-    /*
-     * Triggered when changing to a new item.
-     */
-    func stickerTabBar(_ tabBarController: AZTabBarController, didChangeToItem index: Int) {
-        print("Item Clicked: \(index+1)")
-    }
-    
-    /*
-     * Triggered when navigating between pages.
-     */
-    func stickerTabBar(_ tabBarController: AZTabBarController, didChangeToPage index:Int ,from oldPage:Int) {
-        print("Current Page \(index+1)")
-    }
-    
-    /*
-     * Triggered when clicking the menu button.
-     */
-    func stickerTabBar(_ tabBarController: AZTabBarController, didSelectMenu menu: UIView) {
-        print("Menu Clicked")
-    }
-    
+    func numberOfItemsInTabBar(_ tabBarController: AZTabBarController) -> Int
+
     /*
      * The UIView per index that will be inside the tab.
      */
-    func stickerTabBar(_ tabBarController: AZTabBarController, tabViewForPageAtIndex index: Int) -> UIView {
-        return UIView() //Replace this with the view that will be inside the tab
-    }
+    func stickerTabBar(_ tabBarController: AZTabBarController, tabViewForPageAtIndex index: Int) -> UIView
     
     /*
      * contentView:UIView - is the content that will be presented inside the content holder.
      * controller:UIViewController - is the UIViewController that holds the content view (if exists).
      */
-    func stickerTabBar(_ tabBarController: AZTabBarController, contentViewForPageAtIndex index: Int) -> (contentView: UIView, controller: UIViewController?) {
-        return (UIView()/*insert your view*/,nil/*insert your controller (if exists)*/)
-    }
+    func stickerTabBar(_ tabBarController: AZTabBarController, contentViewForPageAtIndex index: Int) -> ( contentView:UIView,controller:UIViewController?)
+    
+    /*
+     * A Custom menu view
+     */
+    func stickerTabBar(_ tabBarController: AZTabBarController, menuViewForIndex index:Int) -> (view:UIView?,icon:UIImage?,title:String?)
+    
+    
+    /**Optional Delegate Methods**/
+    
+    /*
+     * Triggered when clicking the menu button.
+     */
+     func stickerTabBar(_ tabBarController: AZTabBarController, didSelectMenu menu:UIView, at index:Int)
+    
+    /*
+     * Triggered when closing the custom menu
+     */
+     func stickerTabBar(_ tabBarController: AZTabBarController, didCloseMenu menu:UIView, at index:Int)
+    
+    /*
+     * Triggered when navigating between pages.
+     */
+     func stickerTabBar(_ tabBarController: AZTabBarController, didChangeToPage index:Int ,from oldPage:Int)
+    
+    /*
+     * Triggered when changing to a new item.
+     */
+     func stickerTabBar(_ tabBarController: AZTabBarController, didChangeToItem index:Int)
 }
 ```
 
@@ -87,81 +88,43 @@ And finally add the sub view:
 ```
 
 
-##Extra Customizations
-Checkout the ```Resources.swift``` file:
+Extra Customizations
+
 
 ```swift
-struct R {
-    
-    
-    struct settings {
+        //start with index
+        tabBarController.currentIndex = 7
         
-        //Allow scroll gesture
-        static let scroll:Bool = false
+        //Control settings
+        tabBarController.isPagingEnabled = true
+        tabBarController.isScrollEnabled = true
         
-        //Allow paging (Recommended if scroll is enabled)
-        static let page:Bool = false
+        //UI Settings
         
-        //show seperator
-        static let seprator = true
+        //seperator
+        tabBarController.sepratorColor = UIColor.gray
+        tabBarController.showSeperator = true
+        tabBarController.allowSeperatorShadow = false
+        tabBarController.seperatorHeight = 2
         
-        //show seperator shadow (If the showSeperator is set to false then this is useless)
-        static let shadow = true
-    }
-    
-    struct ui {
+        //arrow controls
+        tabBarController.arrowColor = UIColor.green
+        tabBarController.arrowBackgroundColor = UIColor.clear
         
-        //Show opacity
-        static let shadow:Float = 0.5
+        //tab bar
+        tabBarController.tabBackgroundColor = UIColor(red: (247.0 / 255.0), green: (247.0 / 255.0), blue: (247.0 / 255.0), alpha: 1)
         
-        //Button+Shadow corner radius
-        static let radius:CGFloat = 5
-    }
-    
-    struct color {
+        //menu button
+        tabBarController.menuIconColor = UIColor.orange
+        tabBarController.menuBackgroundColor = UIColor.clear
         
-        //Highlighted cell color
-        static let highlight:UIColor = #colorLiteral(red: 0.876791656, green: 0.8812872767, blue: 0.8813701272, alpha: 1)
+        //collection cell highlight color
+        tabBarController.highlightedItemColor = UIColor.blue
         
-        //Seperator color (Recommended to match highlight color)
-        static let seperator:UIColor = #colorLiteral(red: 0.876791656, green: 0.8812872767, blue: 0.8813701272, alpha: 1)
         
-        //arrow buttons background color
-        static let arrow:UIColor = UIColor.clear
-        
-        //menu button background color
-        static let menu:UIColor = UIColor.clear
-        
-        //main tab background color (This matches the default system tab/tool bar colors)
-        static let background = UIColor(red: (247.0 / 255.0), green: (247.0 / 255.0), blue: (247.0 / 255.0), alpha: 1)
-        
-    }
-    
-    /*DO NOT MODIFY ANYTHING UNDER THE XIB STRUCT*/
-    struct xib {
-        //The file name of the storyboard
-        static let storyboard:String = "AZStickerTab"
-        
-        //The id of the controller
-        static let controller:String = "AZStickerTabController"
-        
-        //The id of the cell
-        static let cell:String = "AZTabBarItemCell"
-    }
-    
-    struct assets {
-        
-        //File name of the menu icon
-        static let menu:String = "ic_menu"
-        
-        //File name of the left arrow icon
-        static let left:String = "ic_keyboard_arrow_left"
-        
-        //File name of the right arrow icon
-        static let right:String = "ic_keyboard_arrow_right"
-        
-    }
-    
-}
+        //custom menu view
+        tabBarController.isCustomMenuEnabled = true
+        tabBarController.isMenuViewHidden = true
 
 ```
+Checkout the [Resources.swift](https://github.com/Minitour/AZTabBar/blob/master/AZTabBar/Source/Resources.swift) file for more options.
