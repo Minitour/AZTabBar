@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController,AZTabBarDelegate,AZTabBarDataSource {
+class ViewController: UIViewController,AZScrollDelegate,AZScrollDataSource {
 
     
     //The line in the bottom of the navigation bar
@@ -45,7 +45,7 @@ class ViewController: UIViewController,AZTabBarDelegate,AZTabBarDataSource {
             self.controllers.append(controller)
         }
         
-        let controller = AZTabBarController.standardController()
+        let controller = AZScrollController.standardController()
         controller.delegate = self
         controller.dataSource = self
         //controller.currentIndex = 7
@@ -75,6 +75,68 @@ class ViewController: UIViewController,AZTabBarDelegate,AZTabBarDataSource {
         self.hairLine.isHidden = false
     }
     
+    func scrollableTab(_ scrollable: AZScrollController, titleForMenuAt index: Int) -> String? {
+        return nil
+    }
+    
+    func scrollableTab(_ scrollable: AZScrollController, imageForMenuAt index: Int) -> UIImage? {
+        return nil
+    }
+    
+    func scrollableTab(_ scrollable: AZScrollController, menuViewForIndexAt index: Int) -> UIView? {
+        return nil
+    }
+    
+    func scrollableTab(_ scrollable: AZScrollController, tabViewForIndexAt index: Int) -> UIView {
+        let label = UILabel()
+        label.text = "\(index+1)"
+        label.textAlignment = .center
+        label.sizeToFit()
+        label.backgroundColor = UIColor.clear
+        label.clipsToBounds = true
+        
+        return label
+    }
+    
+    func scrollableTab(_ scrollable: AZScrollController, contentViewForIndexAt index: Int) -> UIView {
+        let label = UILabel()
+        label.font = label.font.withSize(27)
+        label.text = "Your Content View \(index+1)"
+        label.textColor = UIColor.lightGray
+        label.textAlignment = .center
+        label.backgroundColor = colors[index]
+        return label
+    }
+    
+    func scrollableTab(_ scrollable: AZScrollController, contentSizeForIndexAt index: Int, for orientation:UICellOrientation) -> CGFloat {
+        return orientation == .portrait ? self.view.frame.height * 2 : 200
+    }
+    
+    func scrollableTab(_ scrollable: AZScrollController, numberOfTabsPerPageFor orientation: UICellOrientation) -> Int {
+        return orientation == .portrait ? 5 : 10
+    }
+    
+    func numberOfTabs(_ scrollable: AZScrollController) -> Int {
+        return size
+    }
+    
+    
+    func scrollableTab(_ scrollable: AZScrollController, didSelectMenuAt index: Int) {
+        
+    }
+    
+    func scrollableTab(_ scrollable: AZScrollController, didDismissMenuAt index: Int) {
+        
+    }
+    
+    func scrollableTab(_ scrollable: AZScrollController, didSelectIndexAt index: Int) {
+        print("At \(index)")
+    }
+    
+    
+    
+    
+    /*
     func numberOfItemsInTabBar(_ tabBarController: AZTabBarController) -> Int {
         return size
     }
@@ -130,6 +192,7 @@ class ViewController: UIViewController,AZTabBarDelegate,AZTabBarDataSource {
         return (view:label,icon:nil,title:"Menu \(index+1)")
     }
     
+    */
     private func getRandomColor() -> UIColor{
         let randomRed:CGFloat = CGFloat(drand48())
         let randomGreen:CGFloat = CGFloat(drand48())

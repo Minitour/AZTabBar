@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4F1F07071D75B65500D0AE6F /* AZScrollController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1F07061D75B65500D0AE6F /* AZScrollController.swift */; };
+		4F62D0851D75EDAA0033276A /* AZFlexableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4F62D0841D75EDAA0033276A /* AZFlexableCell.xib */; };
 		4F7447C01D6DEC5700423F82 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7447B81D6DEC5700423F82 /* AppDelegate.swift */; };
 		4F7447C11D6DEC5700423F82 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4F7447B91D6DEC5700423F82 /* Assets.xcassets */; };
 		4F7447C21D6DEC5700423F82 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4F7447BA1D6DEC5700423F82 /* LaunchScreen.storyboard */; };
@@ -37,6 +39,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4F1F07061D75B65500D0AE6F /* AZScrollController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AZScrollController.swift; sourceTree = "<group>"; };
+		4F62D0841D75EDAA0033276A /* AZFlexableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AZFlexableCell.xib; sourceTree = "<group>"; };
 		4F7447B81D6DEC5700423F82 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4F7447B91D6DEC5700423F82 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4F7447BB1D6DEC5700423F82 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -149,6 +153,7 @@
 				4F98B4EF1D6C7D3D0065111C /* AZTabBarController.swift */,
 				4F98B4F01D6C7D3D0065111C /* AZTabBarItemCell.swift */,
 				4F7447E21D6DF0C400423F82 /* Resources.swift */,
+				4F1F07061D75B65500D0AE6F /* AZScrollController.swift */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -158,6 +163,7 @@
 			children = (
 				4F98B4F21D6C7D3D0065111C /* AZStickerTab.storyboard */,
 				4F98B4F31D6C7D3D0065111C /* AZTabBarItemCell.xib */,
+				4F62D0841D75EDAA0033276A /* AZFlexableCell.xib */,
 			);
 			path = XIB;
 			sourceTree = "<group>";
@@ -228,6 +234,7 @@
 				4F98B4F71D6C7D3D0065111C /* AZStickerTab.storyboard in Resources */,
 				4F98B4F81D6C7D3D0065111C /* AZTabBarItemCell.xib in Resources */,
 				4F98B4FA1D6C89A80065111C /* Assets.xcassets in Resources */,
+				4F62D0851D75EDAA0033276A /* AZFlexableCell.xib in Resources */,
 				4F7447C41D6DEC5700423F82 /* Info.plist in Resources */,
 				4F7447C11D6DEC5700423F82 /* Assets.xcassets in Resources */,
 			);
@@ -249,6 +256,7 @@
 				4F98B4F41D6C7D3D0065111C /* AZTabBar+Protocol.swift in Sources */,
 				4F7447DF1D6DED8400423F82 /* SnapKit.swift in Sources */,
 				4F7447C01D6DEC5700423F82 /* AppDelegate.swift in Sources */,
+				4F1F07071D75B65500D0AE6F /* AZScrollController.swift in Sources */,
 				4F7447E81D6EE3B700423F82 /* ContentViewController.swift in Sources */,
 				4F98B4F61D6C7D3D0065111C /* AZTabBarItemCell.swift in Sources */,
 				4F98B4F51D6C7D3D0065111C /* AZTabBarController.swift in Sources */,

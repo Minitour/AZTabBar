@@ -40,6 +40,8 @@ struct AZTabBar{
             static let radius:CGFloat = 5
             
             static let animation:Double  = 0.5
+            
+            static let scrollerTabBarHeight:CGFloat = 40
         }
         
         struct color {
@@ -70,8 +72,12 @@ struct AZTabBar{
             //The id of the controller
             static let controller:String = "AZStickerTabController"
             
+            static let scrollController:String = "AZScrollController"
+            
             //The id of the cell
             static let cell:String = "AZTabBarItemCell"
+            
+            static let flex:String = "AZFlexableCell"
             
             
         }

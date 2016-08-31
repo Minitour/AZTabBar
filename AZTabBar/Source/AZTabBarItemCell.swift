@@ -20,3 +20,16 @@ class AZTabBarItemCell:UICollectionViewCell{
     
     
 }
+
+class AZFlexableCell:UICollectionViewCell{
+    
+    
+    static func id()->String {
+        return "AZFlexableCell"
+    }
+    
+    
+    @IBOutlet weak var itemViewHolder: UIView!
+    
+    
+}
