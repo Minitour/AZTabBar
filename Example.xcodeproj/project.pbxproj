@@ -151,9 +151,9 @@
 			children = (
 				4F98B4EE1D6C7D3D0065111C /* AZTabBar+Protocol.swift */,
 				4F98B4EF1D6C7D3D0065111C /* AZTabBarController.swift */,
+				4F1F07061D75B65500D0AE6F /* AZScrollController.swift */,
 				4F98B4F01D6C7D3D0065111C /* AZTabBarItemCell.swift */,
 				4F7447E21D6DF0C400423F82 /* Resources.swift */,
-				4F1F07061D75B65500D0AE6F /* AZScrollController.swift */,
 			);
 			path = Source;
 			sourceTree = "<group>";

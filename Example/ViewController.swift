@@ -76,7 +76,7 @@ class ViewController: UIViewController,AZScrollDelegate,AZScrollDataSource {
     }
     
     func scrollableTab(_ scrollable: AZScrollController, titleForMenuAt index: Int) -> String? {
-        return nil
+        return "Menu \(index)"
     }
     
     func scrollableTab(_ scrollable: AZScrollController, imageForMenuAt index: Int) -> UIImage? {
@@ -84,7 +84,12 @@ class ViewController: UIViewController,AZScrollDelegate,AZScrollDataSource {
     }
     
     func scrollableTab(_ scrollable: AZScrollController, menuViewForIndexAt index: Int) -> UIView? {
-        return nil
+        let label = UILabel()
+        label.font = label.font.withSize(27)
+        label.text = "Menu #\(index+1)"
+        label.textColor = UIColor.lightGray
+        label.textAlignment = .center
+        return label
     }
     
     func scrollableTab(_ scrollable: AZScrollController, tabViewForIndexAt index: Int) -> UIView {

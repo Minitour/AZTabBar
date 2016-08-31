@@ -306,7 +306,6 @@ class AZScrollController: UIViewController {
         didSet{
             
             if currentPage != oldValue {
-                self.delegate.scrollableTab(self, didSelectMenuAt: currentPage)
                 
             }
         }
@@ -348,6 +347,10 @@ class AZScrollController: UIViewController {
         setupLogic()
         
         setupInterface()
+        
+        switchTab(to: currentIndex, from: -1)
+        
+        didInit = true
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -556,6 +559,11 @@ class AZScrollController: UIViewController {
         
         self.viewContainer.setContentOffset(CGPoint(x: 0, y: self.calculateCellOffsets()[index]), animated: true)
         
+        switchMenuView(to: index)
+        
+    }
+    
+    internal func switchMenuView(to index: Int){
         //init custom menu view
         if self.isCustomMenuEnabled {
             
@@ -587,7 +595,6 @@ class AZScrollController: UIViewController {
                 self.customMenuTitle.text = ""
             }
         }
-        
     }
     
     internal func calculateCellOffsets()->[CGFloat]{
@@ -1021,7 +1028,10 @@ extension AZScrollController: UIScrollViewDelegate {
                         cell.isSelected = true
                     }
                     
+                    self.switchMenuView(to: currentIndex)
+                    
                     delegate.scrollableTab(self, didSelectIndexAt: currentIndex)
+                    
                 }
                 
                 let itemPerPage = self.itemPerPage()

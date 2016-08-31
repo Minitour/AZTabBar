@@ -2,7 +2,12 @@
 A Tab Bar that does not require a swipe gesture to navigate
 
 ##Screenshots
+
+###Normal AZTabBar Controller
 <img src="Screenshot/aztabbar.gif" height="300" />
+
+###Scrollable AZTabBar Controller
+<img src="Screenshot/azscrollable.gif" height="300" />
 
 ##Installation
 
@@ -38,7 +43,7 @@ class ViewController: UIViewController,AZTabBarDelegate,AZTabBarDataSource {
     func stickerTabBar(_ tabBarController: AZTabBarController, menuViewForIndex index:Int) -> (view:UIView?,icon:UIImage?,title:String?)
     
     
-    /**Optional Delegate Methods**/
+    /**Delegate Methods**/
     
     /*
      * Triggered when clicking the menu button.
