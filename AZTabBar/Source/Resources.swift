@@ -42,6 +42,8 @@ struct AZTabBar{
             static let animation:Double  = 0.5
             
             static let scrollerTabBarHeight:CGFloat = 40
+            
+            static let tabBarAnimation = 0.3
         }
         
         struct color {

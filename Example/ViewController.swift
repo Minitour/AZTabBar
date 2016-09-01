@@ -138,6 +138,10 @@ class ViewController: UIViewController,AZScrollDelegate,AZScrollDataSource {
         print("At \(index)")
     }
     
+    func scrollableTab(_ scrollable: AZScrollController, didScrollToPage page: Int) {
+        
+    }
+    
     
     
     

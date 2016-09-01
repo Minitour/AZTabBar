@@ -78,7 +78,7 @@ class AZScrollController: UIViewController {
     
     //The constraint of the custom menu seperator, we used this to show/hide the seperator
     @IBOutlet weak var menuSeperatorConstraint: NSLayoutConstraint!
-
+    
     /*
      * Public Properties
      */
@@ -282,6 +282,8 @@ class AZScrollController: UIViewController {
         }
     }
     
+    public var iMessageMode:Bool = false
+    
     /*
      * Internal Properties - These properties are internal because the extenstions make use of them. If there were no extenstions these would be private.
      */
@@ -306,7 +308,7 @@ class AZScrollController: UIViewController {
         didSet{
             
             if currentPage != oldValue {
-                
+                self.delegate.scrollableTab(self, didScrollToPage: currentPage)
             }
         }
     }
@@ -326,6 +328,9 @@ class AZScrollController: UIViewController {
     //The origin of the tab bar
     internal var tabBarOrigin:CGPoint!
     
+    //flag used to avoid ui animation glitches
+    internal var allowIndexChangeByScroll = true
+    
     /*
      * Private Properties
      */
@@ -340,9 +345,15 @@ class AZScrollController: UIViewController {
     
     //global flag, set to true once viewDidLoad has finished.
     private var didInit = false
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        print(self.view.frame)
+        
+        if iMessageMode {
+            self.orientation = self.view.frame.size.height > self.view.frame.width ? .portrait : .landscape
+        }
         
         setupLogic()
         
@@ -362,7 +373,7 @@ class AZScrollController: UIViewController {
         self.viewContainer.scrollIndicatorInsets = insets
         
         self.tabBarOrigin = self.tabBar.frame.origin
-
+        
     }
     
     override public func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -370,15 +381,20 @@ class AZScrollController: UIViewController {
         self.isRotating = true
         self.tabBar.translatesAutoresizingMaskIntoConstraints = false
         //Method is called when orientation is changed
+        
         if UIDevice.current.orientation.isLandscape {
             self.orientation = .landscape
         } else {
             self.orientation = .portrait
         }
+        
+        
         //Once screen size has changed -> wait for animation to finish.
         coordinator.animate(alongsideTransition: {(context: UIViewControllerTransitionCoordinatorContext) -> Void in
             }, completion: {(context: UIViewControllerTransitionCoordinatorContext) -> Void in
-                
+                if self.iMessageMode {
+                    self.orientation = self.view.frame.size.height > self.view.frame.width ? .portrait : .landscape
+                }
                 //Reload data -> to recalculate the sizes of the cells
                 self.collectionView.performBatchUpdates({
                     //On completion -> reload that data and reselect the selected index (highlight it)
@@ -636,6 +652,7 @@ class AZScrollController: UIViewController {
             //correct the index
             selectedHiddenItem = itemAmount - (itemAmount % itemPerPage) //- itemPerPage
             
+            
             //scroll to the first item of the previous page
             scroll(to: selectedHiddenItem, animated: true)
             
@@ -754,7 +771,7 @@ class AZScrollController: UIViewController {
         rectShape.bounds = bounds
         
         //Set the center point - make to to match the view we are hiding
-        rectShape.position = CGPoint(x: view.frame.origin.x, y: view.frame.origin.y)
+        rectShape.position = CGPoint(x: point.origin.x, y: point.origin.y)
         
         //Set the corner radius to match our maskDiameter value
         rectShape.cornerRadius = maskDiameter
@@ -830,7 +847,7 @@ class AZScrollController: UIViewController {
         rectShape.bounds = bounds
         
         //set the position of the layer using the current point (origin) of the view
-        rectShape.position = CGPoint(x: view.frame.origin.x, y: view.frame.origin.y)
+        rectShape.position = CGPoint(x: point.origin.x, y: point.origin.y)
         
         //set the corner radius as the mask diamter
         rectShape.cornerRadius = maskDiamter
@@ -888,6 +905,8 @@ class AZScrollController: UIViewController {
     }
     
     private func scroll(to index:Int,animated:Bool){
+        
+        self.viewContainer.setContentOffset(self.viewContainer.contentOffset, animated: false)
         //Assert index
         if index >= 0 && index < self.itemAmount {
             //lock controls before scroll
@@ -943,11 +962,58 @@ class AZScrollController: UIViewController {
         setupInterface()
     }
     
-    internal var allowIndexChangeByScroll = true
+    
 }
 
 
 extension AZScrollController: UIScrollViewDelegate {
+    
+    public func setTabBar(hidden:Bool,duration:TimeInterval,animated:Bool){
+        if hidden {
+            //hide
+            if !isBarHidden{
+                if !isAnimatingTabBar {
+                    if !isAnimatingTabBar {
+                        if animated {
+                            isAnimatingTabBar = true
+                            self.tabBar.translatesAutoresizingMaskIntoConstraints = true
+                            UIView.animate(withDuration: duration, animations: {
+                                let frame = CGRect(origin: CGPoint(x: self.tabBarOrigin.x, y: -self.tabBarHeight), size: self.tabBar.frame.size)
+                                self.tabBar.frame = frame
+                                }, completion: { (Bool) in
+                                    self.isAnimatingTabBar = false
+                                    self.isBarHidden = true
+                                    
+                            })
+                        }else{
+                            let frame = CGRect(origin: CGPoint(x: self.tabBarOrigin.x, y: -self.tabBarHeight), size: self.tabBar.frame.size)
+                            self.tabBar.frame = frame
+                        }
+                        
+                    }
+                }
+            }
+        }else{
+            //show
+            if isBarHidden {
+                if !isAnimatingTabBar {
+                    if animated {
+                        isAnimatingTabBar = true
+                        UIView.animate(withDuration: duration, animations: {
+                            self.tabBar.frame = CGRect(origin: CGPoint(x: self.tabBarOrigin.x, y: 0 + self.viewContainer.frame.origin.y/*self.tabBarHeight*/), size: self.tabBar.frame.size)
+                            }, completion: { (Bool) in
+                                self.isAnimatingTabBar = false
+                                self.isBarHidden = false
+                        })
+                    }else{
+                        self.tabBar.frame = CGRect(origin: CGPoint(x: self.tabBarOrigin.x, y: 0 + self.viewContainer.frame.origin.y/*self.tabBarHeight*/), size: self.tabBar.frame.size)
+                    }
+                    
+                }
+            }
+        }
+    }
+    
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView.tag == 1 {
@@ -955,37 +1021,12 @@ extension AZScrollController: UIScrollViewDelegate {
                 if scrollView.contentOffset.y >= scrollView.contentInset.top && scrollView.contentOffset.y <= scrollView.contentSize.height - scrollView.frame.height{
                     if (self.lastContentOffset > scrollView.contentOffset.y) {
                         // move up
+                        setTabBar(hidden: false, duration: AZTabBar.R.ui.tabBarAnimation, animated:true)
                         
-                        if isBarHidden {
-                            if !isAnimatingTabBar {
-                                isAnimatingTabBar = true
-                                UIView.animate(withDuration: 0.5, animations: {
-                                    self.tabBar.frame = CGRect(origin: self.tabBarOrigin, size: self.tabBar.frame.size)
-                                    }, completion: { (Bool) in
-                                        self.isAnimatingTabBar = false
-                                        self.isBarHidden = false
-                                })
-                            }
-                        }
                     }
                     else if (self.lastContentOffset < scrollView.contentOffset.y) {
                         // move down
-                        if !isBarHidden{
-                            if !isAnimatingTabBar {
-                                if !isAnimatingTabBar {
-                                    isAnimatingTabBar = true
-                                    self.tabBar.translatesAutoresizingMaskIntoConstraints = true
-                                    UIView.animate(withDuration: 0.5, animations: {
-                                        let frame = CGRect(origin: CGPoint(x: self.tabBarOrigin.x, y: -self.tabBarOrigin.y), size: self.tabBar.frame.size)
-                                        self.tabBar.frame = frame
-                                        }, completion: { (Bool) in
-                                            self.isAnimatingTabBar = false
-                                            self.isBarHidden = true
-                                            
-                                    })
-                                }
-                            }
-                        }
+                        setTabBar(hidden: true, duration: AZTabBar.R.ui.tabBarAnimation ,animated:true)
                         
                     }
                     // update the new position acquired
@@ -995,25 +1036,17 @@ extension AZScrollController: UIScrollViewDelegate {
                     if scrollView.contentOffset.y >= scrollView.contentSize.height - scrollView.frame.height{
                         
                     }else{
-                        if isBarHidden {
-                            isAnimatingTabBar = true
-                            UIView.animate(withDuration: 0.5, animations: {
-                                self.tabBar.frame = CGRect(origin: self.tabBarOrigin, size: self.tabBar.frame.size)
-                                }, completion: { (Bool) in
-                                    self.isAnimatingTabBar = false
-                                    self.isBarHidden = false
-                                    
-                            })
-                        }
+                        setTabBar(hidden: false, duration: AZTabBar.R.ui.tabBarAnimation ,animated:true)
                     }
                     
                 }
                 
                 if allowIndexChangeByScroll {
-                    let newIndex = offsetInRange(currentOffset: scrollView.contentOffset.y + scrollView.frame.height/2, offsets: self.calculateCellOffsets())
+                    let currentOffset = scrollView.contentOffset.y + scrollView.frame.height/2
+                    let offsetList = self.calculateCellOffsets()
+                    
+                    let newIndex = offsetInRange(currentOffset: currentOffset, offsets: offsetList)
                     if self.currentIndex != newIndex {
-                        
-                        print("Changing index by scrolling")
                         
                         //un highlight cell
                         if let cell = collectionView.cellForItem(at: IndexPath(item: currentIndex,section: 0)){
@@ -1037,11 +1070,14 @@ extension AZScrollController: UIScrollViewDelegate {
                     }
                     
                     let itemPerPage = self.itemPerPage()
-                    let page = self.currentIndex % itemPerPage != 0 ? self.currentIndex - (self.currentIndex % itemPerPage)  : self.currentIndex
+                    let hidden = self.currentIndex % itemPerPage != 0 ? self.currentIndex - (self.currentIndex % itemPerPage)  : self.currentIndex
+                    let page = hidden == 0 ? 0 : hidden/itemPerPage
                     if self.currentPage != page{
-                        self.currentPage = page
+                        //self.selectedHiddenItem = page * itemPerPage
                         
-                        self.collectionView.scrollToItem(at: IndexPath(item: page,section: 0), at: .left, animated: true)
+                        self.currentPage = page
+                        self.selectedHiddenItem = hidden
+                        self.collectionView.scrollToItem(at: IndexPath(item: hidden,section: 0), at: .left, animated: true)
                     }
                 }
                 
@@ -1263,6 +1299,8 @@ protocol AZScrollDelegate {
     func scrollableTab(_ scrollable: AZScrollController, didSelectMenuAt index: Int)
     
     func scrollableTab(_ scrollable: AZScrollController, didDismissMenuAt index: Int)
+    
+    func scrollableTab(_ scrollable: AZScrollController, didScrollToPage page: Int)
 }
 
 protocol AZScrollDataSource {
