@@ -942,6 +942,8 @@ class AZScrollController: UIViewController {
         collectionView.reloadData()
         setupInterface()
     }
+    
+    internal var allowIndexChangeByScroll = true
 }
 
 
@@ -950,9 +952,6 @@ extension AZScrollController: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView.tag == 1 {
             if !isRotating {
-
-                
-
                 if scrollView.contentOffset.y >= scrollView.contentInset.top && scrollView.contentOffset.y <= scrollView.contentSize.height - scrollView.frame.height{
                     if (self.lastContentOffset > scrollView.contentOffset.y) {
                         // move up
@@ -1010,41 +1009,53 @@ extension AZScrollController: UIScrollViewDelegate {
                     
                 }
                 
-                let newIndex = offsetInRange(currentOffset: scrollView.contentOffset.y + scrollView.frame.height/2, offsets: self.calculateCellOffsets())
-                if self.currentIndex != newIndex {
-                    
-                    //un highlight cell
-                    if let cell = collectionView.cellForItem(at: IndexPath(item: currentIndex,section: 0)){
-                        cell.backgroundColor = UIColor.clear
-                        cell.isSelected = false
-                        collectionView.deselectItem(at: IndexPath(item: currentIndex,section: 0), animated: false)
+                if allowIndexChangeByScroll {
+                    let newIndex = offsetInRange(currentOffset: scrollView.contentOffset.y + scrollView.frame.height/2, offsets: self.calculateCellOffsets())
+                    if self.currentIndex != newIndex {
+                        
+                        print("Changing index by scrolling")
+                        
+                        //un highlight cell
+                        if let cell = collectionView.cellForItem(at: IndexPath(item: currentIndex,section: 0)){
+                            cell.backgroundColor = UIColor.clear
+                            cell.isSelected = false
+                            collectionView.deselectItem(at: IndexPath(item: currentIndex,section: 0), animated: false)
+                        }
+                        
+                        self.currentIndex = newIndex
+                        
+                        collectionView.selectItem(at: IndexPath(item: self.currentIndex, section: 0), animated: false, scrollPosition: [])
+                        if let cell = collectionView.cellForItem(at: IndexPath(item: self.currentIndex,section: 0)){
+                            cell.backgroundColor = self.highlightedItemColor
+                            cell.isSelected = true
+                        }
+                        
+                        self.switchMenuView(to: currentIndex)
+                        
+                        delegate.scrollableTab(self, didSelectIndexAt: currentIndex)
+                        
                     }
                     
-                    self.currentIndex = newIndex
-                    
-                    collectionView.selectItem(at: IndexPath(item: self.currentIndex, section: 0), animated: false, scrollPosition: [])
-                    if let cell = collectionView.cellForItem(at: IndexPath(item: self.currentIndex,section: 0)){
-                        cell.backgroundColor = self.highlightedItemColor
-                        cell.isSelected = true
+                    let itemPerPage = self.itemPerPage()
+                    let page = self.currentIndex % itemPerPage != 0 ? self.currentIndex - (self.currentIndex % itemPerPage)  : self.currentIndex
+                    if self.currentPage != page{
+                        self.currentPage = page
+                        
+                        self.collectionView.scrollToItem(at: IndexPath(item: page,section: 0), at: .left, animated: true)
                     }
-                    
-                    self.switchMenuView(to: currentIndex)
-                    
-                    delegate.scrollableTab(self, didSelectIndexAt: currentIndex)
-                    
                 }
                 
-                let itemPerPage = self.itemPerPage()
-                let page = self.currentIndex % itemPerPage != 0 ? self.currentIndex - (self.currentIndex % itemPerPage)  : self.currentIndex
-                if self.currentPage != page{
-                    self.currentPage = page
-                    
-                    self.collectionView.scrollToItem(at: IndexPath(item: page,section: 0), at: .left, animated: true)
-                }
             }
         }
     }
     
+    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+        if scrollView.tag == 1 {
+            if !allowIndexChangeByScroll {
+                allowIndexChangeByScroll = true
+            }
+        }
+    }
     
 }
 
@@ -1068,7 +1079,7 @@ extension AZScrollController: UICollectionViewDelegateFlowLayout {
         case 0:
             //Check if cell was not already selected
             if indexPath.item != currentIndex {
-                
+                allowIndexChangeByScroll = false
                 //Switch container view
                 
                 self.switchTab(to: indexPath.item,from: currentIndex)
